@@ -1,14 +1,13 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
 # =====================================================
 # CONFIGURACIÓN GENERAL
 # =====================================================
 
 st.set_page_config(
-    page_title="IRC Dashboard",
+    page_title="Índice de Riesgo de Crisis",
     page_icon="📊",
     layout="wide"
 )
@@ -39,47 +38,24 @@ ARCHIVO_EXCEL = "data/Matriz_indicadores.xlsx"
 
 @st.cache_data
 def cargar_datos():
+    try:
+        categorias = pd.read_excel(
+            ARCHIVO_EXCEL,
+            sheet_name=0
+        )
+        return categorias
+    except Exception:
+        return pd.DataFrame()
 
-    categorias = pd.read_excel(
-        ARCHIVO_EXCEL,
-        sheet_name="Categorias"
-    )
-
-    matriz = pd.read_excel(
-        ARCHIVO_EXCEL,
-        sheet_name="Matriz integrada"
-    )
-
-    criticidad = pd.read_excel(
-        ARCHIVO_EXCEL,
-        sheet_name="Nivel de criticidad"
-    )
-
-    iaam_tabla = pd.read_excel(
-        ARCHIVO_EXCEL,
-        sheet_name="Probabilidad asistencia militar"
-    )
-
-    return categorias, matriz, criticidad, iaam_tabla
-
-
-try:
-    categorias, matriz, criticidad, iaam_tabla = cargar_datos()
-
-except Exception as e:
-    st.error(f"Error cargando Excel: {e}")
-    st.stop()
+datos = cargar_datos()
 
 # =====================================================
-# VALORES ACTUALES
-# (reemplazar posteriormente por cálculo automático)
+# VALORES DASHBOARD
 # =====================================================
 
 IRC = 2.9
 IAAM = 3.2
-
 ESCENARIO = "Estabilidad funcional"
-
 INDICADORES_CRITICOS = 0
 
 # =====================================================
@@ -105,28 +81,16 @@ st.success(
 c1, c2, c3, c4 = st.columns(4)
 
 with c1:
-    st.metric(
-        "IRC",
-        f"{IRC:.1f}%"
-    )
+    st.metric("IRC", f"{IRC:.1f}%")
 
 with c2:
-    st.metric(
-        "IAAM",
-        f"{IAAM:.1f}%"
-    )
+    st.metric("IAAM", f"{IAAM:.1f}%")
 
 with c3:
-    st.metric(
-        "Escenario",
-        ESCENARIO
-    )
+    st.metric("Escenario", ESCENARIO)
 
 with c4:
-    st.metric(
-        "Indicadores críticos",
-        INDICADORES_CRITICOS
-    )
+    st.metric("Indicadores críticos", INDICADORES_CRITICOS)
 
 # =====================================================
 # RESUMEN EJECUTIVO
@@ -134,12 +98,14 @@ with c4:
 
 st.subheader("Resumen Ejecutivo Automatizado")
 
-st.info("""
+st.info(
+    """
 El sistema evidencia condiciones de estabilidad funcional.
 No se observan señales de convergencia suficientes para una
 crisis de orden público de carácter nacional.
 La capacidad institucional permanece dentro de parámetros normales.
-""")
+"""
+)
 
 # =====================================================
 # TENDENCIA TEMPORAL
@@ -147,35 +113,10 @@ La capacidad institucional permanece dentro de parámetros normales.
 
 st.subheader("Tendencia Temporal IRC · IAAM")
 
-dias = [
-    "D1",
-    "D5",
-    "D10",
-    "D15",
-    "D20",
-    "D25",
-    "D30"
-]
+dias = ["D1","D5","D10","D15","D20","D25","D30"]
 
-irc_hist = [
-    1.2,
-    1.5,
-    1.8,
-    2.0,
-    2.4,
-    2.7,
-    2.9
-]
-
-iaam_hist = [
-    1.1,
-    1.4,
-    1.7,
-    2.0,
-    2.4,
-    2.8,
-    3.2
-]
+irc_hist = [1.2,1.5,1.8,2.0,2.4,2.7,2.9]
+iaam_hist = [1.1,1.4,1.7,2.0,2.4,2.8,3.2]
 
 fig = go.Figure()
 
@@ -214,7 +155,7 @@ IAAM: Índice de Activación de Asistencia Militar
 """)
 
 # =====================================================
-# DISTRIBUCIÓN DE ESCENARIOS
+# ESCENARIOS
 # =====================================================
 
 col1, col2 = st.columns(2)
@@ -241,9 +182,7 @@ with col1:
         ]
     )
 
-    fig2.update_layout(
-        template="plotly_dark"
-    )
+    fig2.update_layout(template="plotly_dark")
 
     st.plotly_chart(
         fig2,
@@ -258,20 +197,14 @@ with col2:
         go.Indicator(
             mode="gauge+number",
             value=IAAM,
-            title={
-                "text":"IAAM"
-            },
+            title={"text":"IAAM"},
             gauge={
-                "axis":{
-                    "range":[0,100]
-                }
+                "axis":{"range":[0,100]}
             }
         )
     )
 
-    fig3.update_layout(
-        template="plotly_dark"
-    )
+    fig3.update_layout(template="plotly_dark")
 
     st.plotly_chart(
         fig3,
@@ -279,15 +212,17 @@ with col2:
     )
 
 # =====================================================
-# CATEGORÍAS
+# DATOS EXCEL
 # =====================================================
 
-st.subheader("Riesgo por Categoría")
+st.subheader("Datos de la Matriz")
 
-st.dataframe(
-    categorias,
-    use_container_width=True
-)
+if not datos.empty:
+    st.dataframe(datos, use_container_width=True)
+else:
+    st.warning(
+        "No fue posible cargar la matriz Excel."
+    )
 
 # =====================================================
 # ALERTAS
@@ -305,43 +240,28 @@ st.warning(
 
 st.subheader("Actores Relevantes")
 
-a1,a2 = st.columns(2)
+a1, a2 = st.columns(2)
 
 with a1:
-
     st.markdown("""
-    **Movimientos sociales**
+**Movimientos sociales**
 
-    - Capacidad movilizadora: Baja
-    - Tendencia: Estable
-    """)
+- Capacidad movilizadora: Baja
+- Tendencia: Estable
 
-    st.markdown("""
-    **Actores políticos**
+**Actores políticos**
 
-    - Polarización: Moderada
-    - Tendencia: Estable
-    """)
+- Polarización: Moderada
+- Tendencia: Estable
+""")
 
 with a2:
-
     st.markdown("""
-    **Plataformas digitales**
+**Plataformas digitales**
 
-    - Actividad: Baja
-    - Tendencia: Estable
-    """)
-
-# =====================================================
-# MATRIZ DE ESCALAMIENTO
-# =====================================================
-
-st.subheader("Matriz de Escalamiento")
-
-st.dataframe(
-    matriz.head(20),
-    use_container_width=True
-)
+- Actividad: Baja
+- Tendencia: Estable
+""")
 
 # =====================================================
 # RECOMENDACIONES
@@ -364,4 +284,3 @@ st.success("""
 st.caption(
     "IRC Dashboard · Sistema de monitoreo estratégico"
 )
-```
