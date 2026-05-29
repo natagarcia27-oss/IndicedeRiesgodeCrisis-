@@ -237,7 +237,8 @@ if archivo and procesar:
             header=None
         )
 
-        fila = 66
+        st.write("Fila 67 completa:")
+st.write(hoja.iloc[66])
 
         escenario_estable = float(hoja.iloc[fila, 4])
         escenario_creciente = float(hoja.iloc[fila, 6])
