@@ -237,10 +237,12 @@ if archivo and procesar:
             header=None
         )
 
-        st.write("Fila 67 completa:")
+       fila = 66
+
+st.write("DEBUG FILA 67")
 st.write(hoja.iloc[66])
 
-        escenario_estable = float(hoja.iloc[fila, 4])
+escenario_estable = float(hoja.iloc[fila, 4])
         escenario_creciente = float(hoja.iloc[fila, 6])
         escenario_critico = float(hoja.iloc[fila, 8])
 
