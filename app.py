@@ -86,7 +86,7 @@ Los indicadores evaluados permanecen dentro de parámetros compatibles con un es
         return f"""
 El sistema evidencia una fase de riesgo creciente.
 
-El IRC alcanza {irc:.2f} y el IAAM {iaam:.2f}.
+El IRC alcanza {irc:.2f}% y el IAAM {iaam:.2f}%.
 
 La convergencia de factores asociados a movilización social y amplificación narrativa incrementa la probabilidad de afectaciones localizadas y exige fortalecimiento de capacidades de monitoreo y coordinación.
 """
@@ -237,12 +237,9 @@ if archivo and procesar:
             header=None
         )
 
-       fila = 66
+        fila = 66
 
-st.write("DEBUG FILA 67")
-st.write(hoja.iloc[66])
-
-escenario_estable = float(hoja.iloc[fila, 4])
+        escenario_estable = float(hoja.iloc[fila, 4])
         escenario_creciente = float(hoja.iloc[fila, 6])
         escenario_critico = float(hoja.iloc[fila, 8])
 
@@ -279,16 +276,28 @@ escenario_estable = float(hoja.iloc[fila, 4])
         c1, c2, c3, c4 = st.columns(4)
 
         with c1:
-            st.metric("IRC", f"{irc:.2f}")
+            st.metric(
+                "IRC",
+                f"{irc:.2f}%"
+            )
 
         with c2:
-            st.metric("IAAM", f"{iaam:.2f}")
+            st.metric(
+                "IAAM",
+                f"{iaam:.2f}%"
+            )
 
         with c3:
-            st.metric("Escenario", escenario)
+            st.metric(
+                "Escenario",
+                escenario
+            )
 
         with c4:
-            st.metric("Criticidad", criticidad)
+            st.metric(
+                "Criticidad",
+                criticidad
+            )
 
         # RESUMEN
 
