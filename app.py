@@ -249,9 +249,9 @@ if archivo and procesar:
         criticidad = determinar_criticidad(irc)
 
         escenario = obtener_escenario_dominante(
-            escenario_estable,
-            escenario_creciente,
-            escenario_critico
+            escenario_estable * 100,
+            escenario_creciente * 100,
+            escenario_critico * 100,
         )
 
         resumen = generar_resumen(
