@@ -76,7 +76,7 @@ def generar_resumen(
         return f"""
 El sistema evidencia condiciones de estabilidad funcional.
 
-El Índice de Riesgo de Crisis (IRC) se ubica en {irc:.2f} y el Índice de Activación de Asistencia Militar (IAAM) alcanza {iaam:.2f}.
+El Índice de Riesgo de Crisis (IRC) se ubica en {irc*100:.0f}% y el Índice de Activación de Asistencia Militar (IAAM) alcanza {iaam*100:.0f}%.
 
 Los indicadores evaluados permanecen dentro de parámetros compatibles con un escenario estable y no se identifican factores con capacidad suficiente para generar una alteración significativa del orden público en el corto plazo.
 """
@@ -96,7 +96,7 @@ La convergencia de factores asociados a movilización social y amplificación na
         return f"""
 El sistema evidencia convergencia de factores críticos.
 
-El IRC alcanza {irc:.2f} y el IAAM {iaam:.2f}.
+El IRC alcanza {irc*100:.0f}% y el IAAM {iaam:.2f}%.
 
 La simultaneidad de múltiples factores de riesgo incrementa significativamente la probabilidad de evolución hacia escenarios de crisis y exige fortalecimiento de capacidades institucionales y mecanismos de coordinación.
 """
@@ -271,21 +271,21 @@ if archivo and procesar:
             "Escenario": escenario
         })
 
-        # KPI
+                # KPI
 
         c1, c2, c3, c4 = st.columns(4)
 
-       with c1:
-    st.metric(
-        "IRC",
-        f"{irc*100:.2f}%"
-    )
+        with c1:
+            st.metric(
+                "IRC",
+                f"{irc*100:.0f}%"
+            )
 
-with c2:
-    st.metric(
-        "IAAM",
-        f"{iaam*100:.2f}%"
-    )
+        with c2:
+            st.metric(
+                "IAAM",
+                f"{iaam*100:.0f}%"
+            )
 
         with c3:
             st.metric(
