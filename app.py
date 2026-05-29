@@ -1,6 +1,10 @@
+# app.py (Versión V2.1)
+
+```python
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
+from datetime import datetime
 
 # =====================================================
 # CONFIGURACIÓN GENERAL
@@ -18,45 +22,191 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-.main {
+
+.main{
     background-color:#0B1118;
 }
+
 [data-testid="stMetricValue"]{
     font-size:2rem;
 }
+
 .block-container{
     padding-top:1rem;
 }
+
 </style>
 """, unsafe_allow_html=True)
 
 # =====================================================
-# CARGA DE DATOS
+# FUNCIONES
 # =====================================================
 
-ARCHIVO_EXCEL = "data/Matriz_indicadores.xlsx"
+def determinar_criticidad(irc):
 
-@st.cache_data
-def cargar_datos():
-    try:
-        categorias = pd.read_excel(
-            ARCHIVO_EXCEL,
-            sheet_name=0
+    if irc < 40:
+        return "ESTABLE"
+
+    elif irc < 70:
+        return "RIESGO CRECIENTE"
+
+    else:
+        return "CRÍTICO"
+
+
+def escenario_dominante(estable, creciente, critico):
+
+    escenarios = {
+        "Estable": estable,
+        "Riesgo creciente": creciente,
+        "Crítico": critico
+    }
+
+    return max(
+        escenarios,
+        key=escenarios.get
+    )
+
+
+def generar_resumen(
+        irc,
+        iaam,
+        escenario
+):
+
+    if escenario == "Estable":
+
+        return f"""
+El sistema evidencia condiciones de estabilidad funcional.
+
+El Índice de Riesgo de Crisis (IRC) se ubica en {irc:.1f}%,
+mientras que el Índice de Activación de Asistencia Militar
+(IAAM) alcanza {iaam:.1f}%.
+
+Los indicadores evaluados permanecen dentro de parámetros
+compatibles con un escenario estable y no se identifican
+factores con capacidad suficiente para generar una alteración
+significativa del orden público en el corto plazo.
+"""
+
+    elif escenario == "Riesgo creciente":
+
+        return f"""
+El sistema evidencia una fase de riesgo creciente.
+
+El IRC alcanza {irc:.1f}% y el IAAM {iaam:.1f}%.
+
+La convergencia de factores asociados a movilización,
+amplificación narrativa y conflictividad social incrementa
+la probabilidad de afectaciones localizadas y exige
+fortalecimiento de capacidades de monitoreo y coordinación.
+"""
+
+    else:
+
+        return f"""
+El sistema evidencia convergencia de factores críticos.
+
+El IRC alcanza {irc:.1f}% y el IAAM {iaam:.1f}%.
+
+La simultaneidad de múltiples factores de riesgo incrementa
+la probabilidad de evolución hacia escenarios de crisis y
+requiere fortalecimiento de capacidades institucionales y
+mecanismos de coordinación.
+"""
+
+
+def generar_alerta(irc):
+
+    if irc >= 70:
+
+        return (
+            "ALERTA CRÍTICA",
+            "Convergencia de factores críticos con capacidad de escalamiento."
         )
-        return categorias
-    except Exception:
-        return pd.DataFrame()
 
-datos = cargar_datos()
+    elif irc >= 40:
+
+        return (
+            "ALERTA PREVENTIVA",
+            "Incremento de indicadores de conflictividad y movilización."
+        )
+
+    else:
+
+        return (
+            "ALERTA INFORMATIVA",
+            "Condiciones generales compatibles con estabilidad funcional."
+        )
+
+
+def generar_recomendaciones(
+        irc,
+        iaam,
+        escenario
+):
+
+    recomendaciones = []
+
+    if escenario == "Estable":
+
+        recomendaciones.extend([
+            "Mantener monitoreo preventivo.",
+            "Actualizar evaluación periódicamente.",
+            "Conservar coordinación institucional."
+        ])
+
+    elif escenario == "Riesgo creciente":
+
+        recomendaciones.extend([
+            "Fortalecer monitoreo territorial.",
+            "Incrementar coordinación interinstitucional.",
+            "Monitorear dinámicas digitales y movilización."
+        ])
+
+    else:
+
+        recomendaciones.extend([
+            "Activar mecanismos reforzados de coordinación.",
+            "Incrementar monitoreo estratégico.",
+            "Evaluar capacidades institucionales de respuesta."
+        ])
+
+    if iaam >= 60:
+
+        recomendaciones.append(
+            "Revisar protocolos asociados a escenarios de asistencia militar."
+        )
+
+    return recomendaciones
+
 
 # =====================================================
-# VALORES DASHBOARD
+# HISTORIAL
 # =====================================================
 
-IRC = 2.9
-IAAM = 3.2
-ESCENARIO = "Estabilidad funcional"
-INDICADORES_CRITICOS = 0
+if "historial" not in st.session_state:
+    st.session_state.historial = []
+
+# =====================================================
+# SIDEBAR
+# =====================================================
+
+st.sidebar.title("Gestión de Evaluación")
+
+archivo = st.sidebar.file_uploader(
+    "Cargar matriz diligenciada",
+    type=["xlsx"]
+)
+
+procesar = st.sidebar.button(
+    "Procesar evaluación"
+)
+
+if st.sidebar.button("Nueva evaluación"):
+
+    st.session_state.clear()
+    st.rerun()
 
 # =====================================================
 # HEADER
@@ -70,217 +220,223 @@ st.caption(
     "Sistema de monitoreo estratégico"
 )
 
-st.success(
-    "ALERTA VERDE · Estabilidad funcional"
-)
-
 # =====================================================
-# KPI
+# PROCESAMIENTO
 # =====================================================
 
-c1, c2, c3, c4 = st.columns(4)
+if archivo and procesar:
 
-with c1:
-    st.metric("IRC", f"{IRC:.1f}%")
+    try:
 
-with c2:
-    st.metric("IAAM", f"{IAAM:.1f}%")
+        hoja = pd.read_excel(
+            archivo,
+            sheet_name="Matriz integrada",
+            header=None
+        )
 
-with c3:
-    st.metric("Escenario", ESCENARIO)
+        fila = 66
 
-with c4:
-    st.metric("Indicadores críticos", INDICADORES_CRITICOS)
+        estable = float(hoja.iloc[fila, 4])
+        creciente = float(hoja.iloc[fila, 6])
+        critico = float(hoja.iloc[fila, 8])
 
-# =====================================================
-# RESUMEN EJECUTIVO
-# =====================================================
+        irc = float(hoja.iloc[fila, 10])
+        iaam = float(hoja.iloc[fila, 12])
 
-st.subheader("Resumen Ejecutivo Automatizado")
+        criticidad = determinar_criticidad(
+            irc
+        )
 
-st.info(
-    """
-El sistema evidencia condiciones de estabilidad funcional.
-No se observan señales de convergencia suficientes para una
-crisis de orden público de carácter nacional.
-La capacidad institucional permanece dentro de parámetros normales.
-"""
-)
+        escenario = escenario_dominante(
+            estable,
+            creciente,
+            critico
+        )
 
-# =====================================================
-# TENDENCIA TEMPORAL
-# =====================================================
+        resumen = generar_resumen(
+            irc,
+            iaam,
+            escenario
+        )
 
-st.subheader("Tendencia Temporal IRC · IAAM")
+        alerta_titulo, alerta_texto = generar_alerta(
+            irc
+        )
 
-dias = ["D1","D5","D10","D15","D20","D25","D30"]
+        recomendaciones = generar_recomendaciones(
+            irc,
+            iaam,
+            escenario
+        )
 
-irc_hist = [1.2,1.5,1.8,2.0,2.4,2.7,2.9]
-iaam_hist = [1.1,1.4,1.7,2.0,2.4,2.8,3.2]
+        st.session_state.historial.append({
+            "Fecha": datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "IRC": irc,
+            "IAAM": iaam,
+            "Escenario": escenario
+        })
 
-fig = go.Figure()
+        # ============================================
+        # KPI
+        # ============================================
 
-fig.add_trace(
-    go.Scatter(
-        x=dias,
-        y=irc_hist,
-        mode="lines+markers",
-        name="IRC"
-    )
-)
+        c1,c2,c3,c4 = st.columns(4)
 
-fig.add_trace(
-    go.Scatter(
-        x=dias,
-        y=iaam_hist,
-        mode="lines+markers",
-        name="IAAM"
-    )
-)
+        with c1:
+            st.metric(
+                "IRC",
+                f"{irc:.1f}%"
+            )
 
-fig.update_layout(
-    template="plotly_dark",
-    height=450
-)
+        with c2:
+            st.metric(
+                "IAAM",
+                f"{iaam:.1f}%"
+            )
 
-st.plotly_chart(
-    fig,
-    use_container_width=True
-)
+        with c3:
+            st.metric(
+                "Escenario",
+                escenario
+            )
 
-st.caption("""
+        with c4:
+            st.metric(
+                "Criticidad",
+                criticidad
+            )
+
+        # ============================================
+        # RESUMEN
+        # ============================================
+
+        st.subheader(
+            "Resumen Ejecutivo Automatizado"
+        )
+
+        st.info(
+            resumen
+        )
+
+        # ============================================
+        # ALERTA
+        # ============================================
+
+        st.subheader(
+            "Alertas Tempranas"
+        )
+
+        st.warning(
+            f"{alerta_titulo}: {alerta_texto}"
+        )
+
+        # ============================================
+        # ESCENARIOS
+        # ============================================
+
+        col1,col2 = st.columns(2)
+
+        with col1:
+
+            fig = go.Figure(
+                data=[
+                    go.Pie(
+                        labels=[
+                            "Estable",
+                            "Riesgo creciente",
+                            "Crítico"
+                        ],
+                        values=[
+                            estable,
+                            creciente,
+                            critico
+                        ],
+                        hole=0.55
+                    )
+                ]
+            )
+
+            fig.update_layout(
+                title="Distribución de Escenarios"
+            )
+
+            st.plotly_chart(
+                fig,
+                use_container_width=True
+            )
+
+        with col2:
+
+            fig2 = go.Figure(
+                go.Indicator(
+                    mode="gauge+number",
+                    value=iaam,
+                    title={
+                        "text":"IAAM"
+                    },
+                    gauge={
+                        "axis":{
+                            "range":[0,100]
+                        }
+                    }
+                )
+            )
+
+            st.plotly_chart(
+                fig2,
+                use_container_width=True
+            )
+
+        # ============================================
+        # DEFINICIONES
+        # ============================================
+
+        st.caption(
+            """
 IRC: Índice de Riesgo de Crisis
 
 IAAM: Índice de Activación de Asistencia Militar
-""")
-
-# =====================================================
-# ESCENARIOS
-# =====================================================
-
-col1, col2 = st.columns(2)
-
-with col1:
-
-    st.subheader("Distribución de Escenarios")
-
-    fig2 = go.Figure(
-        data=[
-            go.Pie(
-                labels=[
-                    "Estable",
-                    "Riesgo creciente",
-                    "Crítico"
-                ],
-                values=[
-                    100,
-                    0,
-                    0
-                ],
-                hole=0.55
-            )
-        ]
-    )
-
-    fig2.update_layout(template="plotly_dark")
-
-    st.plotly_chart(
-        fig2,
-        use_container_width=True
-    )
-
-with col2:
-
-    st.subheader("Asistencia Militar")
-
-    fig3 = go.Figure(
-        go.Indicator(
-            mode="gauge+number",
-            value=IAAM,
-            title={"text":"IAAM"},
-            gauge={
-                "axis":{"range":[0,100]}
-            }
+"""
         )
-    )
 
-    fig3.update_layout(template="plotly_dark")
+        # ============================================
+        # RECOMENDACIONES
+        # ============================================
 
-    st.plotly_chart(
-        fig3,
-        use_container_width=True
-    )
+        st.subheader(
+            "Recomendaciones Estratégicas"
+        )
 
-# =====================================================
-# DATOS EXCEL
-# =====================================================
+        for r in recomendaciones:
 
-st.subheader("Datos de la Matriz")
+            st.success(
+                r
+            )
 
-if not datos.empty:
-    st.dataframe(datos, use_container_width=True)
+        # ============================================
+        # HISTORIAL
+        # ============================================
+
+        st.subheader(
+            "Historial de Evaluaciones"
+        )
+
+        st.dataframe(
+            pd.DataFrame(
+                st.session_state.historial
+            ),
+            use_container_width=True
+        )
+
+    except Exception as e:
+
+        st.error(
+            f"Error procesando matriz: {e}"
+        )
+
 else:
-    st.warning(
-        "No fue posible cargar la matriz Excel."
+
+    st.info(
+        "Cargue una matriz diligenciada y pulse 'Procesar evaluación'."
     )
-
-# =====================================================
-# ALERTAS
-# =====================================================
-
-st.subheader("Alertas Tempranas")
-
-st.warning(
-    "No se registran alertas críticas activas."
-)
-
-# =====================================================
-# ACTORES
-# =====================================================
-
-st.subheader("Actores Relevantes")
-
-a1, a2 = st.columns(2)
-
-with a1:
-    st.markdown("""
-**Movimientos sociales**
-
-- Capacidad movilizadora: Baja
-- Tendencia: Estable
-
-**Actores políticos**
-
-- Polarización: Moderada
-- Tendencia: Estable
-""")
-
-with a2:
-    st.markdown("""
-**Plataformas digitales**
-
-- Actividad: Baja
-- Tendencia: Estable
-""")
-
-# =====================================================
-# RECOMENDACIONES
-# =====================================================
-
-st.subheader("Recomendaciones Estratégicas")
-
-st.success("""
-• Mantener monitoreo preventivo.
-
-• Continuar coordinación institucional.
-
-• Actualizar evaluación semanal.
-""")
-
-# =====================================================
-# FOOTER
-# =====================================================
-
-st.caption(
-    "IRC Dashboard · Sistema de monitoreo estratégico"
-)
+```
