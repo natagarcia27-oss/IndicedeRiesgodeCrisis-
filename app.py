@@ -315,11 +315,11 @@ if archivo and procesar:
             "Escenario": escenario
         })
 
-        # KPI
+      # KPI
 
-        c1, c2, c3, c4 = st.columns(4)
+c1, c2, c3, c4 = st.columns(4)
 
-        with c1:
+with c1:
     st.metric(
         "IRC",
         f"{irc:.2f}"
@@ -331,17 +331,17 @@ with c2:
         f"{iaam:.2f}"
     )
 
-        with c3:
-            st.metric(
-                "Escenario",
-                escenario
-            )
+with c3:
+    st.metric(
+        "Escenario",
+        escenario
+    )
 
-        with c4:
-            st.metric(
-                "Criticidad",
-                criticidad
-            )
+with c4:
+    st.metric(
+        "Criticidad",
+        criticidad
+    )
 
         # RESUMEN
 
