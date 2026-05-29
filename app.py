@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 from datetime import datetime
 
 # =====================================================
-# CONFIGURACIÓN GENERAL
+# CONFIGURACIÓN
 # =====================================================
 
 st.set_page_config(
@@ -14,22 +14,18 @@ st.set_page_config(
 )
 
 # =====================================================
-# ESTILO
+# ESTILOS
 # =====================================================
 
 st.markdown("""
 <style>
 
-.main{
-    background-color:#0B1118;
+.block-container{
+    padding-top:1rem;
 }
 
 [data-testid="stMetricValue"]{
     font-size:2rem;
-}
-
-.block-container{
-    padding-top:1rem;
 }
 
 </style>
@@ -47,11 +43,14 @@ def determinar_criticidad(irc):
     elif irc < 70:
         return "RIESGO CRECIENTE"
 
-    else:
-        return "CRÍTICO"
+    return "CRÍTICO"
 
 
-def escenario_dominante(estable, creciente, critico):
+def obtener_escenario_dominante(
+        estable,
+        creciente,
+        critico
+):
 
     escenarios = {
         "Estable": estable,
@@ -76,14 +75,9 @@ def generar_resumen(
         return f"""
 El sistema evidencia condiciones de estabilidad funcional.
 
-El Índice de Riesgo de Crisis (IRC) se ubica en {irc:.1f}%,
-mientras que el Índice de Activación de Asistencia Militar
-(IAAM) alcanza {iaam:.1f}%.
+El Índice de Riesgo de Crisis (IRC) se ubica en {irc:.1f}% y el Índice de Activación de Asistencia Militar (IAAM) alcanza {iaam:.1f}%.
 
-Los indicadores evaluados permanecen dentro de parámetros
-compatibles con un escenario estable y no se identifican
-factores con capacidad suficiente para generar una alteración
-significativa del orden público en el corto plazo.
+Los indicadores evaluados permanecen dentro de parámetros compatibles con un escenario estable y no se identifican factores con capacidad suficiente para generar una alteración significativa del orden público en el corto plazo.
 """
 
     elif escenario == "Riesgo creciente":
@@ -93,23 +87,15 @@ El sistema evidencia una fase de riesgo creciente.
 
 El IRC alcanza {irc:.1f}% y el IAAM {iaam:.1f}%.
 
-La convergencia de factores asociados a movilización,
-amplificación narrativa y conflictividad social incrementa
-la probabilidad de afectaciones localizadas y exige
-fortalecimiento de capacidades de monitoreo y coordinación.
+La convergencia de factores asociados a movilización social y amplificación narrativa incrementa la probabilidad de afectaciones localizadas y exige fortalecimiento de capacidades de monitoreo y coordinación.
 """
 
-    else:
-
-        return f"""
+    return f"""
 El sistema evidencia convergencia de factores críticos.
 
 El IRC alcanza {irc:.1f}% y el IAAM {iaam:.1f}%.
 
-La simultaneidad de múltiples factores de riesgo incrementa
-la probabilidad de evolución hacia escenarios de crisis y
-requiere fortalecimiento de capacidades institucionales y
-mecanismos de coordinación.
+La simultaneidad de múltiples factores de riesgo incrementa significativamente la probabilidad de evolución hacia escenarios de crisis y exige fortalecimiento de capacidades institucionales y mecanismos de coordinación.
 """
 
 
@@ -129,18 +115,15 @@ def generar_alerta(irc):
             "Incremento de indicadores de conflictividad y movilización."
         )
 
-    else:
-
-        return (
-            "ALERTA INFORMATIVA",
-            "Condiciones generales compatibles con estabilidad funcional."
-        )
+    return (
+        "ALERTA INFORMATIVA",
+        "Condiciones compatibles con estabilidad funcional."
+    )
 
 
 def generar_recomendaciones(
-        irc,
-        iaam,
-        escenario
+        escenario,
+        iaam
 ):
 
     recomendaciones = []
@@ -176,7 +159,6 @@ def generar_recomendaciones(
         )
 
     return recomendaciones
-
 
 # =====================================================
 # HISTORIAL
@@ -233,21 +215,34 @@ if archivo and procesar:
 
         fila = 66
 
-        estable = float(hoja.iloc[fila, 4])
-        creciente = float(hoja.iloc[fila, 6])
-        critico = float(hoja.iloc[fila, 8])
+        escenario_estable = float(
+            hoja.iloc[fila, 4]
+        )
 
-        irc = float(hoja.iloc[fila, 10])
-        iaam = float(hoja.iloc[fila, 12])
+        escenario_creciente = float(
+            hoja.iloc[fila, 6]
+        )
+
+        escenario_critico = float(
+            hoja.iloc[fila, 8]
+        )
+
+        irc = float(
+            hoja.iloc[fila, 10]
+        )
+
+        iaam = float(
+            hoja.iloc[fila, 12]
+        )
 
         criticidad = determinar_criticidad(
             irc
         )
 
-        escenario = escenario_dominante(
-            estable,
-            creciente,
-            critico
+        escenario = obtener_escenario_dominante(
+            escenario_estable,
+            escenario_creciente,
+            escenario_critico
         )
 
         resumen = generar_resumen(
@@ -261,9 +256,8 @@ if archivo and procesar:
         )
 
         recomendaciones = generar_recomendaciones(
-            irc,
-            iaam,
-            escenario
+            escenario,
+            iaam
         )
 
         st.session_state.historial.append({
@@ -273,11 +267,9 @@ if archivo and procesar:
             "Escenario": escenario
         })
 
-        # ============================================
         # KPI
-        # ============================================
 
-        c1,c2,c3,c4 = st.columns(4)
+        c1, c2, c3, c4 = st.columns(4)
 
         with c1:
             st.metric(
@@ -303,9 +295,7 @@ if archivo and procesar:
                 criticidad
             )
 
-        # ============================================
         # RESUMEN
-        # ============================================
 
         st.subheader(
             "Resumen Ejecutivo Automatizado"
@@ -315,9 +305,7 @@ if archivo and procesar:
             resumen
         )
 
-        # ============================================
-        # ALERTA
-        # ============================================
+        # ALERTAS
 
         st.subheader(
             "Alertas Tempranas"
@@ -327,11 +315,9 @@ if archivo and procesar:
             f"{alerta_titulo}: {alerta_texto}"
         )
 
-        # ============================================
-        # ESCENARIOS
-        # ============================================
+        # GRÁFICOS
 
-        col1,col2 = st.columns(2)
+        col1, col2 = st.columns(2)
 
         with col1:
 
@@ -344,9 +330,9 @@ if archivo and procesar:
                             "Crítico"
                         ],
                         values=[
-                            estable,
-                            creciente,
-                            critico
+                            escenario_estable,
+                            escenario_creciente,
+                            escenario_critico
                         ],
                         hole=0.55
                     )
@@ -364,13 +350,11 @@ if archivo and procesar:
 
         with col2:
 
-            fig2 = go.Figure(
+            gauge = go.Figure(
                 go.Indicator(
                     mode="gauge+number",
                     value=iaam,
-                    title={
-                        "text":"IAAM"
-                    },
+                    title={"text":"IAAM"},
                     gauge={
                         "axis":{
                             "range":[0,100]
@@ -380,13 +364,9 @@ if archivo and procesar:
             )
 
             st.plotly_chart(
-                fig2,
+                gauge,
                 use_container_width=True
             )
-
-        # ============================================
-        # DEFINICIONES
-        # ============================================
 
         st.caption(
             """
@@ -396,23 +376,17 @@ IAAM: Índice de Activación de Asistencia Militar
 """
         )
 
-        # ============================================
         # RECOMENDACIONES
-        # ============================================
 
         st.subheader(
             "Recomendaciones Estratégicas"
         )
 
-        for r in recomendaciones:
+        for item in recomendaciones:
 
-            st.success(
-                r
-            )
+            st.success(item)
 
-        # ============================================
         # HISTORIAL
-        # ============================================
 
         st.subheader(
             "Historial de Evaluaciones"
@@ -436,4 +410,3 @@ else:
     st.info(
         "Cargue una matriz diligenciada y pulse 'Procesar evaluación'."
     )
-```
