@@ -275,17 +275,17 @@ if archivo and procesar:
 
         c1, c2, c3, c4 = st.columns(4)
 
-        with c1:
-            st.metric(
-                "IRC",
-                f"{irc:.2f}%"
-            )
+       with c1:
+    st.metric(
+        "IRC",
+        f"{irc*100:.2f}%"
+    )
 
-        with c2:
-            st.metric(
-                "IAAM",
-                f"{iaam:.2f}%"
-            )
+with c2:
+    st.metric(
+        "IAAM",
+        f"{iaam*100:.2f}%"
+    )
 
         with c3:
             st.metric(
