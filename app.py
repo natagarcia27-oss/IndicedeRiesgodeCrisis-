@@ -121,10 +121,59 @@ def generar_alerta(irc):
     )
 
 
-def generar_recomendaciones(
-        escenario,
-        iaam
-):
+def generar_alistamiento(iaam):
+
+    if iaam <= 30:
+
+        return {
+            "nivel": "Baja probabilidad",
+            "intencion": "Prevenir y anticipar",
+            "ordenes": [
+                "Mantener monitoreo permanente del IRC/IAAM y reporte diario consolidado.",
+                "Coordinación continua con autoridades civiles y Policía para intercambio de información.",
+                "Verificar planes de contingencia y protocolos de apoyo subsidiario.",
+                "Reforzar capacitación en DD.HH., uso diferenciado de la fuerza y reglas de empleo aplicables al apoyo a la autoridad civil."
+            ]
+        }
+
+    elif iaam <= 60:
+
+        return {
+            "nivel": "Probable",
+            "intencion": "Preparar y articular",
+            "ordenes": [
+                "Activar instancias de coordinación interinstitucional (PMU u homólogos) con gobernadores y alcaldes.",
+                "Revisión jurídica para eventuales solicitudes de asistencia militar.",
+                "Alistamiento logístico general y disponibilidad de capacidades de apoyo.",
+                "Consolidar un plan de comunicaciones institucionales para escenarios de escalamiento."
+            ]
+        }
+
+    elif iaam <= 80:
+
+        return {
+            "nivel": "Alta probabilidad",
+            "intencion": "Apoyar de forma subsidiaria",
+            "ordenes": [
+                "Disponer capacidades para apoyo a la autoridad civil, sujeto a solicitud formal.",
+                "Coordinar con la Policía la delimitación de roles, manteniendo liderazgo policial.",
+                "Priorizar la protección de infraestructura crítica conforme a la ley.",
+                "Fortalecer mecanismos de control, registro y supervisión."
+            ]
+        }
+
+    else:
+
+        return {
+            "nivel": "Intervención inminente",
+            "intencion": "Contener y estabilizar bajo control civil",
+            "ordenes": [
+                "Ejecutar la asistencia militar conforme a la solicitud de la autoridad civil competente.",
+                "Coordinación centralizada con Gobierno, Policía y autoridades territoriales.",
+                "Priorizar la continuidad de servicios esenciales y protección de infraestructura estratégica.",
+                "Garantizar comunicación pública transparente y mecanismos reforzados de supervisión."
+            ]
+        }
 
     recomendaciones = []
 
@@ -255,10 +304,9 @@ if archivo and procesar:
             irc
         )
 
-        recomendaciones = generar_recomendaciones(
-            escenario,
-            iaam
-        )
+        alistamiento = generar_alistamiento(
+    iaam
+)
 
         st.session_state.historial.append({
             "Fecha": datetime.now().strftime("%Y-%m-%d %H:%M"),
@@ -272,16 +320,16 @@ if archivo and procesar:
         c1, c2, c3, c4 = st.columns(4)
 
         with c1:
-            st.metric(
-                "IRC",
-                f"{irc:.1f}%"
-            )
+    st.metric(
+        "IRC",
+        f"{irc:.2f}"
+    )
 
-        with c2:
-            st.metric(
-                "IAAM",
-                f"{iaam:.1f}%"
-            )
+with c2:
+    st.metric(
+        "IAAM",
+        f"{iaam:.2f}"
+    )
 
         with c3:
             st.metric(
@@ -376,15 +424,24 @@ IAAM: Índice de Activación de Asistencia Militar
 """
         )
 
-        # RECOMENDACIONES
+       # ALISTAMIENTO ESTRATÉGICO
 
-        st.subheader(
-            "Recomendaciones Estratégicas"
-        )
+st.subheader(
+    "Alistamiento Estratégico"
+)
 
-        for item in recomendaciones:
+st.metric(
+    "Nivel IAAM",
+    alistamiento["nivel"]
+)
 
-            st.success(item)
+st.info(
+    f"Intención del Comandante: {alistamiento['intencion']}"
+)
+
+for orden in alistamiento["ordenes"]:
+
+    st.success(orden)
 
         # HISTORIAL
 
