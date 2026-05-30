@@ -306,6 +306,12 @@ if archivo and procesar:
             escenario_critico * 100
         )
 
+               criticidad = determinar_criticidad(irc)
+
+        # =====================================================
+        # MÉTRICAS PRINCIPALES
+        # =====================================================
+
         c1, c2, c3, c4, c5, c6 = st.columns(6)
 
         with c1:
@@ -331,61 +337,47 @@ if archivo and procesar:
                 "Categorías afectadas",
                 categorias_afectadas
             )
-# RESUMEN
 
-resumen = generar_resumen(
-    irc,
-    iaam,
-    escenario
-)
+        # =====================================================
+        # RESUMEN EJECUTIVO
+        # =====================================================
 
-st.subheader("Resumen Ejecutivo Automatizado")
-st.info(resumen)
+        resumen = generar_resumen(
+            irc,
+            iaam,
+            escenario
+        )
 
-# ALERTAS
+        st.subheader("Resumen Ejecutivo Automatizado")
+        st.info(resumen)
 
-st.subheader("Alertas Tempranas")
+        # =====================================================
+        # ALERTAS
+        # =====================================================
 
-if irc >= 70:
-    st.error(
-        "ALERTA CRÍTICA\n\nConvergencia de factores críticos con capacidad de escalamiento."
-    )
+        st.subheader("Alertas Tempranas")
 
-elif irc >= 40:
-    st.warning(
-        "ALERTA PREVENTIVA\n\nIncremento sostenido de indicadores de riesgo."
-    )
+        if irc >= 70:
 
-else:
-    st.success(
-        "ALERTA INFORMATIVA\n\nCondiciones compatibles con estabilidad funcional."
-    )
-
-            st.warning(
-                "ALERTA PREVENTIVA\n\nIncremento sostenido de indicadores de conflictividad."
-            )
-
-            st.info(
-                "ALERTA INFORMATIVA\n\nMonitoreo permanente."
+            st.error(
+                "ALERTA CRÍTICA\n\nConvergencia de factores críticos con capacidad de escalamiento."
             )
 
         elif irc >= 40:
 
             st.warning(
-                "ALERTA PREVENTIVA\n\nIncremento sostenido de indicadores de conflictividad."
-            )
-
-            st.info(
-                "ALERTA INFORMATIVA\n\nMonitoreo permanente."
+                "ALERTA PREVENTIVA\n\nIncremento sostenido de indicadores de riesgo."
             )
 
         else:
 
-            st.info(
+            st.success(
                 "ALERTA INFORMATIVA\n\nCondiciones compatibles con estabilidad funcional."
             )
 
-        # GRÁFICOS
+        # =====================================================
+        # GRÁFICOS PRINCIPALES
+        # =====================================================
 
         col1, col2 = st.columns(2)
 
@@ -395,16 +387,11 @@ else:
 
             fig.add_trace(
                 go.Bar(
-    x=[
-        "Estable",
-        "Riesgo creciente",
-        "Crítico"
-    ],
-    marker_color=[
-        "#2E7D32",   # Verde
-        "#D4A017",   # Amarillo quemado
-        "#C62828"    # Rojo
-    ],
+                    x=[
+                        "Estable",
+                        "Riesgo creciente",
+                        "Crítico"
+                    ],
                     y=[
                         escenario_estable * 100,
                         escenario_creciente * 100,
@@ -415,7 +402,12 @@ else:
                         f"{escenario_creciente*100:.0f}%",
                         f"{escenario_critico*100:.0f}%"
                     ],
-                    textposition="outside"
+                    textposition="outside",
+                    marker_color=[
+                        "#2E7D32",
+                        "#D4A017",
+                        "#C62828"
+                    ]
                 )
             )
 
@@ -429,105 +421,18 @@ else:
                 fig,
                 use_container_width=True
             )
-            st.subheader("Riesgo por Categoría")
 
-            radar = go.Figure()
-
-            riesgo_categorias = []
-
-            for categoria, filas in categorias.items():
-
-                estable = 0
-                creciente = 0
-                critico = 0
-
-                for fila_cat in filas:
-
-                    fila_excel = fila_cat + 1
-
-                    valor_estable = str(
-                        hoja.iloc[fila_excel, 4]
-                    ).strip().upper()
-
-                    valor_creciente = str(
-                        hoja.iloc[fila_excel, 6]
-                    ).strip().upper()
-
-                    valor_critico = str(
-                        hoja.iloc[fila_excel, 8]
-                    ).strip().upper()
-
-                   if "✓" in valor_estable or valor_estable in ["SI", "SÍ", "X", "1"]:
-                        estable += 1
-
-                    if valor_creciente or valor_creciente in ["SI", "SÍ", "X", "1"]:
-                        creciente += 1
-
-                    if valor_critico or valor_critico in ["SI", "SÍ", "X", "1"]:
-                        critico += 1
-
-                total = estable + creciente + critico
-
-                if total == 0:
-                    riesgo = 0
-
-                else:
-
-                    puntaje = (
-                        (estable * 1)
-                        + (creciente * 2)
-                        + (critico * 3)
-                    )
-
-                    promedio = puntaje / total
-
-                    riesgo = (promedio / 3) * 100
-
-                riesgo_categorias.append(riesgo)
-
-            radar.add_trace(
-                go.Scatterpolar(
-                    r=riesgo_categorias,
-                    theta=list(categorias.keys()),
-                    fill="toself",
-                    name="Nivel de riesgo"
-                )
-            )
-
-            radar.update_layout(
-                title="Riesgo por Categoría",
-                polar=dict(
-                    radialaxis=dict(
-                        visible=True,
-                        range=[0, 100]
-                    )
-                ),
-                height=600
-            )
-
-            st.plotly_chart(
-                radar,
-                use_container_width=True
-            )
         with col2:
 
             gauge = go.Figure(
                 go.Indicator(
                     mode="gauge+number",
                     value=iaam,
-                    title={
-                        "text": "IAAM (%)"
-                    },
-                    number={
-                        "suffix": "%"
-                    },
+                    title={"text": "IAAM (%)"},
+                    number={"suffix": "%"},
                     gauge={
-                        "axis": {
-                            "range": [0, 100]
-                        },
-                        "bar": {
-                            "thickness": 0.3
-                        },
+                        "axis": {"range": [0, 100]},
+                        "bar": {"thickness": 0.3},
                         "steps": [
                             {"range": [0, 30], "color": "#d9ead3"},
                             {"range": [30, 60], "color": "#fff2cc"},
@@ -538,9 +443,7 @@ else:
                 )
             )
 
-            gauge.update_layout(
-                height=450
-            )
+            gauge.update_layout(height=450)
 
             st.plotly_chart(
                 gauge,
@@ -553,10 +456,99 @@ IRC: Índice de Riesgo de Crisis
 IAAM: Índice de Activación de Asistencia Militar
 """)
 
+        # =====================================================
+        # RIESGO POR CATEGORÍA
+        # =====================================================
+
+        st.subheader("Riesgo por Categoría")
+
+        radar = go.Figure()
+
+        riesgo_categorias = []
+
+        for categoria, filas in categorias.items():
+
+            estable = 0
+            creciente = 0
+            critico = 0
+
+            for fila_cat in filas:
+
+                fila_excel = fila_cat + 1
+
+                valor_estable = str(
+                    hoja.iloc[fila_excel, 4]
+                ).strip().upper()
+
+                valor_creciente = str(
+                    hoja.iloc[fila_excel, 6]
+                ).strip().upper()
+
+                valor_critico = str(
+                    hoja.iloc[fila_excel, 8]
+                ).strip().upper()
+
+                if "✓" in valor_estable or valor_estable in ["SI", "SÍ", "X", "1"]:
+                    estable += 1
+
+                if "✓" in valor_creciente or valor_creciente in ["SI", "SÍ", "X", "1"]:
+                    creciente += 1
+
+                if "✓" in valor_critico or valor_critico in ["SI", "SÍ", "X", "1"]:
+                    critico += 1
+
+            total = estable + creciente + critico
+
+            if total == 0:
+
+                riesgo = 0
+
+            else:
+
+                puntaje = (
+                    estable * 1
+                    + creciente * 2
+                    + critico * 3
+                )
+
+                promedio = puntaje / total
+
+                riesgo = (promedio / 3) * 100
+
+            riesgo_categorias.append(riesgo)
+
+        radar.add_trace(
+            go.Scatterpolar(
+                r=riesgo_categorias,
+                theta=list(categorias.keys()),
+                fill="toself",
+                name="Nivel de riesgo"
+            )
+        )
+
+        radar.update_layout(
+            polar=dict(
+                radialaxis=dict(
+                    visible=True,
+                    range=[0, 100]
+                )
+            ),
+            height=650
+        )
+
+        st.plotly_chart(
+            radar,
+            use_container_width=True
+        )
+
+        # =====================================================
         # ALISTAMIENTO ESTRATÉGICO
+        # =====================================================
+
         alistamiento = generar_alistamiento(
             iaam
         )
+
         st.subheader(
             "Alistamiento Estratégico"
         )
@@ -573,7 +565,9 @@ IAAM: Índice de Activación de Asistencia Militar
         for orden in alistamiento["ordenes"]:
             st.success(orden)
 
+        # =====================================================
         # HISTORIAL
+        # =====================================================
 
         st.subheader(
             "Historial de Evaluaciones"
@@ -585,8 +579,6 @@ IAAM: Índice de Activación de Asistencia Militar
             ),
             use_container_width=True
         )
-
-    except Exception as e:
 
         st.error(
             f"Error procesando matriz: {e}"
