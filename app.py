@@ -612,14 +612,52 @@ if archivo and procesar:
                     margin-bottom:8px;
                 ">
                     🟢 ALERTA INFORMATIVA
-                </div>
+                        else:
+
+            st.markdown("""
+            <div style="
+                background:#f0fdf4;
+                border-left:6px solid #16a34a;
+                padding:20px;
+                border-radius:12px;
+                margin-bottom:20px;
+            ">
 
                 <div style="
+                    font-size:18px;
+                    font-weight:700;
+                    color:#166534;
+                    margin-bottom:8px;
+                ">
+                    🟢 ALERTA INFORMATIVA
+                        else:
+
+            st.markdown("""
+            <div style="
+                background:#f0fdf4;
+                border-left:6px solid #16a34a;
+                padding:20px;
+                border-radius:12px;
+                margin-bottom:20px;
+            ">
+
+                <div style="
+                    font-size:18px;
+                    font-weight:700;
+                    color:#166534;
+                    margin-bottom:8px;
+                ">
+                    🟢 ALERTA INFORMATIVA
+                </div>
+
+                <p style="
                     color:#14532d;
                     line-height:1.6;
+                    margin:0;
                 ">
                     Condiciones compatibles con estabilidad funcional.
-                </div>
+                </p>
+
             </div>
             """, unsafe_allow_html=True)
 
