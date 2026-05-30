@@ -519,148 +519,115 @@ if archivo and procesar:
         # ALERTAS
         # =====================================================
 
-                # =====================================
-        # ALERTAS TEMPRANAS
-        # =====================================
+# =====================================
+# ALERTAS TEMPRANAS
+# =====================================
 
-        st.markdown("""
+st.markdown("""
+<div style="
+    margin-top:10px;
+    margin-bottom:15px;
+">
+    <h3 style="
+        color:#0f172a;
+        font-size:22px;
+        font-weight:700;
+        margin-bottom:10px;
+    ">
+        Alertas Tempranas
+    </h3>
+</div>
+""", unsafe_allow_html=True)
+
+if irc >= 70:
+
+    st.markdown("""
+    <div style="
+        background:#fef2f2;
+        border-left:6px solid #dc2626;
+        padding:20px;
+        border-radius:12px;
+        margin-bottom:20px;
+    ">
         <div style="
-            margin-top:10px;
-            margin-bottom:15px;
+            font-size:18px;
+            font-weight:700;
+            color:#991b1b;
+            margin-bottom:8px;
         ">
-            <h3 style="
-                color:#0f172a;
-                font-size:22px;
-                font-weight:700;
-                margin-bottom:10px;
-            ">
-                Alertas Tempranas
-            </h3>
+            🔴 ALERTA CRÍTICA
         </div>
-        """, unsafe_allow_html=True)
 
-        if irc >= 70:
+        <p style="
+            color:#7f1d1d;
+            line-height:1.6;
+            margin:0;
+        ">
+            Convergencia de factores críticos con capacidad de escalamiento.
+        </p>
 
-            st.markdown("""
-            <div style="
-                background:#fef2f2;
-                border-left:6px solid #dc2626;
-                padding:20px;
-                border-radius:12px;
-                margin-bottom:20px;
-            ">
-                <div style="
-                    font-size:18px;
-                    font-weight:700;
-                    color:#991b1b;
-                    margin-bottom:8px;
-                ">
-                    🔴 ALERTA CRÍTICA
-                </div>
+    </div>
+    """, unsafe_allow_html=True)
 
-                <div style="
-                    color:#7f1d1d;
-                    line-height:1.6;
-                ">
-                    Convergencia de factores críticos con capacidad de escalamiento.
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+elif irc >= 40:
 
-        elif irc >= 40:
+    st.markdown("""
+    <div style="
+        background:#fffbeb;
+        border-left:6px solid #d97706;
+        padding:20px;
+        border-radius:12px;
+        margin-bottom:20px;
+    ">
+        <div style="
+            font-size:18px;
+            font-weight:700;
+            color:#92400e;
+            margin-bottom:8px;
+        ">
+            🟡 ALERTA PREVENTIVA
+        </div>
 
-            st.markdown("""
-            <div style="
-                background:#fffbeb;
-                border-left:6px solid #d97706;
-                padding:20px;
-                border-radius:12px;
-                margin-bottom:20px;
-            ">
-                <div style="
-                    font-size:18px;
-                    font-weight:700;
-                    color:#92400e;
-                    margin-bottom:8px;
-                ">
-                    🟡 ALERTA PREVENTIVA
-                </div>
+        <p style="
+            color:#78350f;
+            line-height:1.6;
+            margin:0;
+        ">
+            Incremento sostenido de indicadores de riesgo.
+        </p>
 
-                <div style="
-                    color:#78350f;
-                    line-height:1.6;
-                ">
-                    Incremento sostenido de indicadores de riesgo.
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
 
-        else:
+else:
 
-            st.markdown("""
-            <div style="
-                background:#f0fdf4;
-                border-left:6px solid #16a34a;
-                padding:20px;
-                border-radius:12px;
-                margin-bottom:20px;
-            ">
-                <div style="
-                    font-size:18px;
-                    font-weight:700;
-                    color:#166534;
-                    margin-bottom:8px;
-                ">
-                    🟢 ALERTA INFORMATIVA
-                        else:
+    st.markdown("""
+    <div style="
+        background:#f0fdf4;
+        border-left:6px solid #16a34a;
+        padding:20px;
+        border-radius:12px;
+        margin-bottom:20px;
+    ">
+        <div style="
+            font-size:18px;
+            font-weight:700;
+            color:#166534;
+            margin-bottom:8px;
+        ">
+            🟢 ALERTA INFORMATIVA
+        </div>
 
-            st.markdown("""
-            <div style="
-                background:#f0fdf4;
-                border-left:6px solid #16a34a;
-                padding:20px;
-                border-radius:12px;
-                margin-bottom:20px;
-            ">
+        <p style="
+            color:#14532d;
+            line-height:1.6;
+            margin:0;
+        ">
+            Condiciones compatibles con estabilidad funcional.
+        </p>
 
-                <div style="
-                    font-size:18px;
-                    font-weight:700;
-                    color:#166534;
-                    margin-bottom:8px;
-                ">
-                    🟢 ALERTA INFORMATIVA
-                        else:
-
-            st.markdown("""
-            <div style="
-                background:#f0fdf4;
-                border-left:6px solid #16a34a;
-                padding:20px;
-                border-radius:12px;
-                margin-bottom:20px;
-            ">
-
-                <div style="
-                    font-size:18px;
-                    font-weight:700;
-                    color:#166534;
-                    margin-bottom:8px;
-                ">
-                    🟢 ALERTA INFORMATIVA
-                </div>
-
-                <p style="
-                    color:#14532d;
-                    line-height:1.6;
-                    margin:0;
-                ">
-                    Condiciones compatibles con estabilidad funcional.
-                </p>
-
-            </div>
-            """, unsafe_allow_html=True)
-
+    </div>
+    """, unsafe_allow_html=True)
         # =====================================================
         # GRÁFICOS PRINCIPALES
         # =====================================================
