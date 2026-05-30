@@ -246,6 +246,67 @@ if archivo and procesar:
         irc = float(hoja.iloc[fila, 10]) * 100
         iaam = float(hoja.iloc[fila, 12]) * 100
 
+        # ==========================================
+# INDICADORES CRÍTICOS
+# ==========================================
+
+indicadores_criticos = 0
+
+for i in range(2, 66):
+
+    valor = str(hoja.iloc[i, 8]).strip().upper()
+
+    if valor in ["X", "1", "CRITICO", "CRÍTICO"]:
+        indicadores_criticos += 1
+
+categorias_afectadas = 0
+
+categorias = {
+    "Legitimidad electoral": range(0, 8),
+    "Movilización social": range(8, 16),
+    "Dinámica digital y mediática": range(16, 24),
+    "Disrupción logística": range(24, 28),
+    "Violencia y orden público": range(28, 34),
+    "Relación civil-militar": range(34, 39),
+    "Actores armados ilegales": range(39, 44),
+    "Violencia organizada": range(44, 50),
+    "Estabilidad institucional": range(50, 56),
+    "Variables económicas": range(56, 64)
+}
+
+categorias_afectadas = 0
+
+for categoria, filas in categorias.items():
+
+    tiene_critico = False
+
+    for fila_cat in filas:
+
+        fila_excel = fila_cat + 1
+
+        valor = str(
+            hoja.iloc[fila_excel, 8]
+        ).strip().upper()
+
+        if valor in ["SI", "SÍ", "X", "1"]:
+
+            tiene_critico = True
+
+    if tiene_critico:
+        categorias_afectadas += 1
+
+    tiene_critico = False
+
+    for fila_cat in filas:
+
+        valor = str(hoja.iloc[fila_cat, 8]).strip().upper()
+
+        if valor in ["X", "1", "CRITICO", "CRÍTICO"]:
+            tiene_critico = True
+
+    if tiene_critico:
+        categorias_afectadas += 1
+
         criticidad = determinar_criticidad(irc)
 
         escenario = obtener_escenario_dominante(
@@ -273,7 +334,7 @@ if archivo and procesar:
 
         # KPI
 
-        c1, c2, c3, c4 = st.columns(4)
+       c1, c2, c3, c4, c5, c6 = st.columns(6)
 
         with c1:
             st.metric(
@@ -298,6 +359,17 @@ if archivo and procesar:
                 "Criticidad",
                 criticidad
             )
+with c5:
+    st.metric(
+        "Indicadores críticos",
+        indicadores_criticos
+    )
+
+with c6:
+    st.metric(
+        "Categorías afectadas",
+        categorias_afectadas
+    )
 
         # RESUMEN
 
@@ -387,44 +459,85 @@ if archivo and procesar:
             )
             st.subheader("Riesgo por Categoría")
 
-            radar = go.Figure()
+          radar = go.Figure()
 
-            radar.add_trace(
-                go.Scatterpolar(
-                    r=[
-                        escenario_estable * 100,
-                        irc,
-                        escenario_creciente * 100,
-                        iaam,
-                        escenario_critico * 100,
-                        irc
-                    ],
-                    theta=[
-                        "Legitimidad",
-                        "Violencia",
-                        "Civil-Militar",
-                        "Logística",
-                        "Digital",
-                        "Movilización"
-                    ],
-                    fill="toself"
-                )
-            )
+riesgo_categorias = []
 
-            radar.update_layout(
-                polar=dict(
-                    radialaxis=dict(
-                        visible=True,
-                        range=[0, 100]
-                    )
-                ),
-                height=500
-            )
+for categoria, filas in categorias.items():
 
-            st.plotly_chart(
-                radar,
-                use_container_width=True
-            )
+    estable = 0
+    creciente = 0
+    critico = 0
+
+    for fila_cat in filas:
+
+        fila_excel = fila_cat + 1
+
+        valor_estable = str(
+            hoja.iloc[fila_excel, 4]
+        ).strip().upper()
+
+        valor_creciente = str(
+            hoja.iloc[fila_excel, 6]
+        ).strip().upper()
+
+        valor_critico = str(
+            hoja.iloc[fila_excel, 8]
+        ).strip().upper()
+
+        if valor_estable in ["SI", "SÍ", "X", "1"]:
+            estable += 1
+
+        if valor_creciente in ["SI", "SÍ", "X", "1"]:
+            creciente += 1
+
+        if valor_critico in ["SI", "SÍ", "X", "1"]:
+            critico += 1
+
+    total = estable + creciente + critico
+
+    if total == 0:
+
+        riesgo = 0
+
+    else:
+
+        puntaje = (
+            (estable * 1)
+            + (creciente * 2)
+            + (critico * 3)
+        )
+
+        promedio = puntaje / total
+
+        riesgo = (promedio / 3) * 100
+
+    riesgo_categorias.append(riesgo)
+
+radar.add_trace(
+    go.Scatterpolar(
+        r=riesgo_categorias,
+        theta=list(categorias.keys()),
+        fill="toself",
+        name="Nivel de riesgo"
+    )
+)
+
+radar.update_layout(
+    title="Riesgo por Categoría",
+    polar=dict(
+        radialaxis=dict(
+            visible=True,
+            range=[0, 100]
+        )
+    ),
+    height=600
+)
+
+st.plotly_chart(
+    radar,
+    use_container_width=True
+)
 
         with col2:
 
