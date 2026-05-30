@@ -211,17 +211,89 @@ if st.sidebar.button("Nueva evaluación"):
 
 
 # =====================================================
-# HEADER
+# HEADER EJECUTIVO
 # =====================================================
 
-st.title(
-    "Índice de Riesgo de Crisis ante manifestaciones sociales violentas"
-)
+st.markdown("""
+<style>
 
-st.caption(
-    "Sistema de monitoreo estratégico"
-)
+.header-container{
+    background:#ffffff;
+    border:1px solid #dce3ea;
+    border-radius:18px;
+    padding:28px;
+    margin-bottom:25px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.06);
+}
 
+.header-top{
+    color:#4f6b8a;
+    font-size:0.85rem;
+    font-weight:600;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
+.header-title{
+    color:#1f2d3d;
+    font-size:2.3rem;
+    font-weight:700;
+    line-height:1.2;
+    margin-top:8px;
+}
+
+.header-subtitle{
+    color:#607080;
+    font-size:1rem;
+    margin-top:10px;
+}
+
+.header-divider{
+    height:1px;
+    background:#e5eaf0;
+    margin-top:18px;
+    margin-bottom:18px;
+}
+
+.header-footer{
+    display:flex;
+    justify-content:space-between;
+    color:#6b7b8c;
+    font-size:0.9rem;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown(f"""
+<div class="header-container">
+
+    <div class="header-top">
+        CENTRO DE MONITOREO ESTRATÉGICO
+    </div>
+
+    <div class="header-title">
+        Índice de Riesgo de Crisis ante Manifestaciones Sociales Violentas
+    </div>
+
+    <div class="header-subtitle">
+        Sistema Integrado de Evaluación Prospectiva, Alerta Temprana y Apoyo a la Decisión
+    </div>
+
+    <div class="header-divider"></div>
+
+    <div class="header-footer">
+        <div>
+            Plataforma de monitoreo estratégico
+        </div>
+
+        <div>
+            {datetime.now().strftime("%d/%m/%Y %H:%M")}
+        </div>
+    </div>
+
+</div>
+""", unsafe_allow_html=True)
 
 # =====================================================
 # PROCESAMIENTO
