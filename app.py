@@ -331,29 +331,35 @@ if archivo and procesar:
                 "Categorías afectadas",
                 categorias_afectadas
             )
-                # RESUMEN
-    
-                resumen = generar_resumen(
-                    irc,
-                    iaam,
-                    escenario
-                )
-    
-                st.subheader(
-                    "Resumen Ejecutivo Automatizado"
-                )
-    
-                st.info(resumen)
-    
-                # ALERTAS
-    
-                st.subheader("Alertas Tempranas")
+# RESUMEN
 
-        if irc >= 70:
+resumen = generar_resumen(
+    irc,
+    iaam,
+    escenario
+)
 
-            st.error(
-                "ALERTA CRÍTICA\n\nConvergencia de factores críticos con capacidad de escalamiento."
-            )
+st.subheader("Resumen Ejecutivo Automatizado")
+st.info(resumen)
+
+# ALERTAS
+
+st.subheader("Alertas Tempranas")
+
+if irc >= 70:
+    st.error(
+        "ALERTA CRÍTICA\n\nConvergencia de factores críticos con capacidad de escalamiento."
+    )
+
+elif irc >= 40:
+    st.warning(
+        "ALERTA PREVENTIVA\n\nIncremento sostenido de indicadores de riesgo."
+    )
+
+else:
+    st.success(
+        "ALERTA INFORMATIVA\n\nCondiciones compatibles con estabilidad funcional."
+    )
 
             st.warning(
                 "ALERTA PREVENTIVA\n\nIncremento sostenido de indicadores de conflictividad."
