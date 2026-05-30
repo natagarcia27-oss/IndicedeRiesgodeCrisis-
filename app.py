@@ -577,7 +577,6 @@ if archivo and procesar:
         
         with graf1:
         
-        ```
         fig_donut = go.Figure()
         
         fig_donut.add_trace(
