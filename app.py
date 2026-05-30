@@ -523,9 +523,9 @@ IAAM: Índice de Activación de Asistencia Militar
 """)
 
         # ALISTAMIENTO ESTRATÉGICO
-alistamiento = generar_alistamiento(
-    iaam
-)
+        alistamiento = generar_alistamiento(
+            iaam
+        )
         st.subheader(
             "Alistamiento Estratégico"
         )
