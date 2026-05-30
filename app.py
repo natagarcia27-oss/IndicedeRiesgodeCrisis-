@@ -552,322 +552,274 @@ if archivo and procesar:
                 "🟢 ALERTA INFORMATIVA\n\nCondiciones compatibles con estabilidad funcional."
             )
 
-        # =====================================================
-        # VISUALIZACIÓN ESTRATÉGICA
-        # =====================================================
-        
-        st.markdown("""
-        <h2 style="
+# =====================================================
+# VISUALIZACIÓN ESTRATÉGICA
+# =====================================================
+
+st.markdown("""
+<h2 style="
+    color:#0f172a;
+    font-size:32px;
+    font-weight:800;
+    margin-top:25px;
+    margin-bottom:20px;
+">
+Visualización Estratégica
+</h2>
+""", unsafe_allow_html=True)
+
+graf1, graf2 = st.columns(2)
+
+# =====================================================
+# PROBABILIDAD DE ESCENARIOS
+# =====================================================
+
+with graf1:
+
+    st.markdown("""
+    <div style="
+        background:white;
+        border:1px solid #e5e7eb;
+        border-radius:20px;
+        padding:20px;
+        box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    ">
+        <h3 style="
+            margin:0;
             color:#0f172a;
-            font-size:32px;
+            font-size:24px;
             font-weight:800;
-            margin-top:25px;
-            margin-bottom:20px;
         ">
-        Visualización Estratégica
-        </h2>
-        """, unsafe_allow_html=True)
-        
-        graf1, graf2 = st.columns(2)
-        
-        # =====================================================
-        # TARJETA 1 - PROBABILIDAD DE ESCENARIOS
-        # =====================================================
-        
-        with graf1:
-        
-            st.markdown("""
-            <div style="
-                background:white;
-                border:1px solid #e5e7eb;
-                border-radius:20px;
-                padding:20px;
-                box-shadow:0 4px 12px rgba(0,0,0,0.05);
-            ">
-            <h3 style="
-                margin-top:0;
-                color:#0f172a;
-                font-size:24px;
-                font-weight:700;
-            ">
             Probabilidad de Escenarios
-            </h3>
-            </div>
-            """, unsafe_allow_html=True)
-        
-            dominante_valor = max(
-                escenario_estable * 100,
-                escenario_creciente * 100,
-                escenario_critico * 100
-            )
-        
-            fig_donut = go.Figure()
-        
-            fig_donut.add_trace(
-                go.Pie(
-                    labels=[
-                        "Estable",
-                        "Riesgo creciente",
-                        "Crítico"
+        </h3>
+    </div>
+    """, unsafe_allow_html=True)
+
+    dominante_valor = max(
+        escenario_estable * 100,
+        escenario_creciente * 100,
+        escenario_critico * 100
+    )
+
+    fig_donut = go.Figure(
+        data=[
+            go.Pie(
+                labels=[
+                    "Estable",
+                    "Riesgo creciente",
+                    "Crítico"
+                ],
+                values=[
+                    escenario_estable * 100,
+                    escenario_creciente * 100,
+                    escenario_critico * 100
+                ],
+                hole=0.68,
+                sort=False,
+                textinfo="percent",
+                textfont=dict(
+                    color="white",
+                    size=18
+                ),
+                marker=dict(
+                    colors=[
+                        "#16a34a",
+                        "#d97706",
+                        "#dc2626"
                     ],
-                    values=[
-                        escenario_estable * 100,
-                        escenario_creciente * 100,
-                        escenario_critico * 100
-                    ],
-                    hole=0.72,
-                    sort=False,
-                    textinfo="percent",
-                    textfont=dict(
+                    line=dict(
                         color="white",
-                        size=16
-                    ),
-                    marker=dict(
-                        colors=[
-                            "#16a34a",
-                            "#d97706",
-                            "#dc2626"
-                        ]
+                        width=4
                     )
                 )
             )
-        
-            fig_donut.update_layout(
-        
-                height=430,
-        
-                margin=dict(
-                    t=20,
-                    b=20,
-                    l=20,
-                    r=20
-                ),
-        
-                paper_bgcolor="white",
-        
-                showlegend=True,
-        
-                legend=dict(
-                    orientation="h",
-                    y=-0.05,
-                    x=0.10
-                ),
-        
-                annotations=[
-        
-                    dict(
-                        text=f"<b>{dominante_valor:.1f}%</b>",
-                        x=0.5,
-                        y=0.54,
-                        showarrow=False,
-                        font=dict(
-                            size=34,
-                            color="#0f172a"
-                        )
-                    ),
-        
-                    dict(
-                        text=f"{escenario}",
-                        x=0.5,
-                        y=0.42,
-                        showarrow=False,
-                        font=dict(
-                            size=20,
-                            color="#64748b"
-                        )
-                    )
-                ]
+        ]
+    )
+
+    fig_donut.update_layout(
+        height=500,
+        paper_bgcolor="white",
+        margin=dict(t=20, b=20, l=20, r=20),
+
+        annotations=[
+            dict(
+                text=f"<b>{dominante_valor:.1f}%</b>",
+                x=0.5,
+                y=0.55,
+                showarrow=False,
+                font=dict(
+                    size=40,
+                    color="#0f172a"
+                )
+            ),
+            dict(
+                text=escenario,
+                x=0.5,
+                y=0.42,
+                showarrow=False,
+                font=dict(
+                    size=20,
+                    color="#64748b"
+                )
             )
-        
-            st.plotly_chart(
-                fig_donut,
-                use_container_width=True
-            )
-        
-            # =====================================================
-            # TARJETA 2 - IAAM PREMIUM EXECUTIVE
-            # =====================================================
-            
-            with graf2:
-            
-                if iaam <= 30:
-                    color_iaam = "#16a34a"
-                    nivel_iaam = "BAJA PROBABILIDAD"
-            
-                elif iaam <= 60:
-                    color_iaam = "#ca8a04"
-                    nivel_iaam = "PROBABLE"
-            
-                elif iaam <= 80:
-                    color_iaam = "#ea580c"
-                    nivel_iaam = "ALTA PROBABILIDAD"
-            
-                else:
-                    color_iaam = "#dc2626"
-                    nivel_iaam = "INTERVENCIÓN INMINENTE"
-            
-                st.markdown("""
-                <div style="
-                    background:white;
-                    border-radius:22px;
-                    padding:22px;
-                    border:1px solid #e5e7eb;
-                    box-shadow:0 8px 24px rgba(0,0,0,.08);
-                ">
-                <h3 style="
-                    margin:0;
-                    color:#0f172a;
-                    font-size:24px;
-                    font-weight:800;
-                ">
-                    Índice de Activación de Asistencia Militar
-                </h3>
-                </div>
-                """, unsafe_allow_html=True)
-            
-                fig_iaam = go.Figure()
-            
-                fig_iaam.add_trace(
-                    go.Indicator(
-                        mode="gauge+number",
-            
-                        value=iaam,
-            
-                        number={
-                            "suffix":"%",
-                            "font":{
-                                "size":70,
-                                "color":"#0f172a"
-                            }
-                        },
-            
-                        gauge={
-            
-                            "shape":"angular",
-            
-                            "axis":{
-                                "range":[0,100],
-                                "tickwidth":2,
-                                "tickcolor":"#94a3b8"
-                            },
-            
-                            "bar":{
-                                "color":color_iaam,
-                                "thickness":0.55
-                            },
-            
-                            "bgcolor":"white",
-            
-                            "borderwidth":4,
-            
-                            "bordercolor":"#cbd5e1",
-            
-                            "steps":[
-            
-                                {
-                                    "range":[0,30],
-                                    "color":"#dcfce7"
-                                },
-            
-                                {
-                                    "range":[30,60],
-                                    "color":"#fef3c7"
-                                },
-            
-                                {
-                                    "range":[60,80],
-                                    "color":"#fed7aa"
-                                },
-            
-                                {
-                                    "range":[80,100],
-                                    "color":"#fee2e2"
-                                }
-            
-                            ],
-            
-                            "threshold":{
-            
-                                "line":{
-                                    "color":"#111827",
-                                    "width":10
-                                },
-            
-                                "thickness":1,
-            
-                                "value":iaam
-                            }
-                        }
-                    )
-                )
-            
-                fig_iaam.update_layout(
-            
-                    height=500,
-            
-                    margin=dict(
-                        t=20,
-                        b=0,
-                        l=20,
-                        r=20
-                    ),
-            
-                    paper_bgcolor="white",
-            
-                    font=dict(
-                        family="Arial",
-                        color="#0f172a"
-                    )
-                )
-            
-                st.plotly_chart(
-                    fig_iaam,
-                    use_container_width=True
-                )
-            
-                st.markdown(
-                    f"""
-                    <div style="
-                        background:white;
-                        border-radius:18px;
-                        padding:22px;
-                        margin-top:-15px;
-                        border:1px solid #e5e7eb;
-                        box-shadow:0 4px 12px rgba(0,0,0,.05);
-                        text-align:center;
-                    ">
-            
-                        <div style="
-                            font-size:12px;
-                            font-weight:800;
-                            color:#64748b;
-                            letter-spacing:1px;
-                            text-transform:uppercase;
-                        ">
-                            Nivel de Activación
-                        </div>
-            
-                        <div style="
-                            margin-top:10px;
-                            font-size:26px;
-                            font-weight:900;
-                            color:{color_iaam};
-                        ">
-                            {nivel_iaam}
-                        </div>
-            
-                        <div style="
-                            margin-top:10px;
-                            font-size:15px;
-                            color:#475569;
-                        ">
-                            {generar_alistamiento(iaam)["intencion"]}
-                        </div>
-            
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+        ],
+
+        legend=dict(
+            orientation="h",
+            y=-0.05,
+            x=0.15
+        )
+    )
+
+    st.plotly_chart(
+        fig_donut,
+        use_container_width=True
+    )
+
+# =====================================================
+# IAAM EJECUTIVO
+# =====================================================
+
+with graf2:
+
+    if iaam <= 30:
+        color_iaam = "#16a34a"
+        nivel_iaam = "BAJA PROBABILIDAD"
+
+    elif iaam <= 60:
+        color_iaam = "#ca8a04"
+        nivel_iaam = "PROBABLE"
+
+    elif iaam <= 80:
+        color_iaam = "#ea580c"
+        nivel_iaam = "ALTA PROBABILIDAD"
+
+    else:
+        color_iaam = "#dc2626"
+        nivel_iaam = "INTERVENCIÓN INMINENTE"
+
+    st.markdown("""
+    <div style="
+        background:white;
+        border:1px solid #e5e7eb;
+        border-radius:20px;
+        padding:20px;
+        box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    ">
+        <h3 style="
+            margin:0;
+            color:#0f172a;
+            font-size:24px;
+            font-weight:800;
+        ">
+            Índice de Activación de Asistencia Militar
+        </h3>
+    </div>
+    """, unsafe_allow_html=True)
+
+    fig_iaam = go.Figure()
+
+    fig_iaam.add_trace(
+        go.Indicator(
+            mode="gauge+number",
+            value=iaam,
+
+            number={
+                "suffix":"%",
+                "font":{
+                    "size":72,
+                    "color":"#0f172a"
+                }
+            },
+
+            gauge={
+
+                "shape":"angular",
+
+                "axis":{
+                    "range":[0,100]
+                },
+
+                "bar":{
+                    "color":color_iaam,
+                    "thickness":0.60
+                },
+
+                "borderwidth":5,
+                "bordercolor":"#cbd5e1",
+
+                "steps":[
+                    {"range":[0,30],"color":"#dcfce7"},
+                    {"range":[30,60],"color":"#fef3c7"},
+                    {"range":[60,80],"color":"#fed7aa"},
+                    {"range":[80,100],"color":"#fee2e2"}
+                ],
+
+                "threshold":{
+                    "line":{
+                        "color":"#111827",
+                        "width":10
+                    },
+                    "value":iaam
+                }
+            }
+        )
+    )
+
+    fig_iaam.update_layout(
+        height=500,
+        paper_bgcolor="white",
+        margin=dict(t=20, b=20, l=20, r=20)
+    )
+
+    st.plotly_chart(
+        fig_iaam,
+        use_container_width=True
+    )
+
+    st.markdown(
+        f"""
+        <div style="
+            background:white;
+            border:1px solid #e5e7eb;
+            border-radius:18px;
+            padding:20px;
+            margin-top:-10px;
+            text-align:center;
+            box-shadow:0 4px 12px rgba(0,0,0,0.05);
+        ">
+
+            <div style="
+                font-size:12px;
+                color:#64748b;
+                font-weight:800;
+                text-transform:uppercase;
+                letter-spacing:1px;
+            ">
+                Nivel de Activación
+            </div>
+
+            <div style="
+                margin-top:10px;
+                font-size:26px;
+                font-weight:900;
+                color:{color_iaam};
+            ">
+                {nivel_iaam}
+            </div>
+
+            <div style="
+                margin-top:10px;
+                font-size:15px;
+                color:#475569;
+            ">
+                {generar_alistamiento(iaam)["intencion"]}
+            </div>
+
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
         
         # =====================================================
         # RIESGO POR CATEGORÍA
