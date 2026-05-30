@@ -309,7 +309,7 @@ if archivo and procesar:
 
         # ALERTAS
 
-                st.subheader("Alertas Tempranas")
+        st.subheader("Alertas Tempranas")
 
         if irc >= 70:
 
@@ -385,46 +385,46 @@ if archivo and procesar:
                 fig,
                 use_container_width=True
             )
-            st.subheader("Riesgo por Categoría")
+                        st.subheader("Riesgo por Categoría")
 
-radar = go.Figure()
+            radar = go.Figure()
 
-radar.add_trace(
-    go.Scatterpolar(
-        r=[
-            escenario_estable * 100,
-            irc,
-            escenario_creciente * 100,
-            iaam,
-            escenario_critico * 100,
-            irc
-        ],
-        theta=[
-            "Legitimidad",
-            "Violencia",
-            "Civil-Militar",
-            "Logística",
-            "Digital",
-            "Movilización"
-        ],
-        fill="toself"
-    )
-)
+            radar.add_trace(
+                go.Scatterpolar(
+                    r=[
+                        escenario_estable * 100,
+                        irc,
+                        escenario_creciente * 100,
+                        iaam,
+                        escenario_critico * 100,
+                        irc
+                    ],
+                    theta=[
+                        "Legitimidad",
+                        "Violencia",
+                        "Civil-Militar",
+                        "Logística",
+                        "Digital",
+                        "Movilización"
+                    ],
+                    fill="toself"
+                )
+            )
 
-radar.update_layout(
-    polar=dict(
-        radialaxis=dict(
-            visible=True,
-            range=[0, 100]
-        )
-    ),
-    height=500
-)
+            radar.update_layout(
+                polar=dict(
+                    radialaxis=dict(
+                        visible=True,
+                        range=[0, 100]
+                    )
+                ),
+                height=500
+            )
 
-st.plotly_chart(
-    radar,
-    use_container_width=True
-)
+            st.plotly_chart(
+                radar,
+                use_container_width=True
+            )
 
         with col2:
 
