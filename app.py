@@ -210,56 +210,58 @@ if st.sidebar.button("Nueva evaluación"):
     st.rerun()
 
 
-# =====================================================
+# ==========================================
 # HEADER EJECUTIVO
-# =====================================================
+# ==========================================
 
 fecha_actual = datetime.now().strftime("%d/%m/%Y %H:%M")
 
-st.markdown(f"""
+header_html = f"""
 <style>
 
 .header-container {{
-    background:white;
-    border:1px solid #dfe6ee;
-    border-radius:18px;
-    padding:30px;
-    margin-bottom:25px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.05);
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    padding: 35px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }}
 
 .header-top {{
-    color:#4f6b8a;
-    font-size:0.85rem;
-    font-weight:700;
-    letter-spacing:1px;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }}
 
 .header-title {{
-    color:#1f2d3d;
-    font-size:2.3rem;
-    font-weight:700;
-    line-height:1.2;
-    margin-top:10px;
+    font-size: 36px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-top: 10px;
+    margin-bottom: 12px;
+    line-height: 1.2;
 }}
 
 .header-subtitle {{
-    color:#6c7a89;
-    margin-top:10px;
-    font-size:1rem;
+    font-size: 16px;
+    color: #475569;
+    margin-bottom: 20px;
 }}
 
 .header-divider {{
-    border-top:1px solid #e5eaef;
-    margin-top:18px;
-    margin-bottom:18px;
+    height: 1px;
+    background: #e2e8f0;
+    margin: 20px 0;
 }}
 
 .header-footer {{
     display:flex;
     justify-content:space-between;
-    color:#6c7a89;
-    font-size:0.9rem;
+    color:#64748b;
+    font-size:14px;
 }}
 
 </style>
@@ -281,18 +283,14 @@ st.markdown(f"""
     <div class="header-divider"></div>
 
     <div class="header-footer">
-        <div>
-            Plataforma de monitoreo estratégico
-        </div>
-
-        <div>
-            {fecha_actual}
-        </div>
+        <div>Plataforma de monitoreo estratégico</div>
+        <div>{fecha_actual}</div>
     </div>
 
 </div>
+"""
 
-""", unsafe_allow_html=True)
+st.markdown(header_html, unsafe_allow_html=True)
 
 # =====================================================
 # PROCESAMIENTO
