@@ -76,7 +76,7 @@ def generar_resumen(
         return f"""
 El sistema evidencia condiciones de estabilidad funcional.
 
-El Índice de Riesgo de Crisis (IRC) se ubica en {irc*100:.0f}% y el Índice de Activación de Asistencia Militar (IAAM) alcanza {iaam*100:.0f}%.
+El Índice de Riesgo de Crisis (IRC) se ubica en {irc:.0f}% y el Índice de Activación de Asistencia Militar (IAAM) alcanza {iaam:.0f}%.
 
 Los indicadores evaluados permanecen dentro de parámetros compatibles con un escenario estable y no se identifican factores con capacidad suficiente para generar una alteración significativa del orden público en el corto plazo.
 """
@@ -86,7 +86,7 @@ Los indicadores evaluados permanecen dentro de parámetros compatibles con un es
         return f"""
 El sistema evidencia una fase de riesgo creciente.
 
-El IRC alcanza {irc:.2f}% y el IAAM {iaam:.2f}%.
+El IRC alcanza {irc:.0f}% y el IAAM {iaam:.0f}%
 
 La convergencia de factores asociados a movilización social y amplificación narrativa incrementa la probabilidad de afectaciones localizadas y exige fortalecimiento de capacidades de monitoreo y coordinación.
 """
