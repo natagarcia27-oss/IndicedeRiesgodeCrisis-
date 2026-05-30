@@ -868,10 +868,22 @@ if archivo and procesar:
                     """,
                     unsafe_allow_html=True
                 )
-        IRC · Índice de Riesgo de Crisis &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-        IAAM · Índice de Activación de Asistencia Militar
-        </div>
-        """, unsafe_allow_html=True)
+                      st.markdown(
+                    f"""
+                    <div style="
+                        background:white;
+                        border-radius:18px;
+                        padding:22px;
+                        margin-top:-15px;
+                        border:1px solid #e5e7eb;
+                        box-shadow:0 4px 12px rgba(0,0,0,.05);
+                        text-align:center;
+                    ">
+                        ...
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
         
         # =====================================================
         # RIESGO POR CATEGORÍA
