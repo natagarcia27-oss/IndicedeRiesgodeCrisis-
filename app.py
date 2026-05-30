@@ -284,6 +284,48 @@ Plataforma de monitoreo estratégico | {fecha_actual}
 """,
 unsafe_allow_html=True
 )
+st.markdown("""
+<style>
+
+.metric-card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    padding:18px;
+    text-align:center;
+    box-shadow:0 2px 8px rgba(0,0,0,0.04);
+    min-height:120px;
+}
+
+.metric-title{
+    font-size:12px;
+    font-weight:700;
+    color:#64748b;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    margin-bottom:10px;
+}
+
+.metric-value{
+    font-size:32px;
+    font-weight:800;
+    color:#0f172a;
+}
+
+.metric-green{
+    color:#15803d;
+}
+
+.metric-yellow{
+    color:#b45309;
+}
+
+.metric-red{
+    color:#b91c1c;
+}
+
+</style>
+""", unsafe_allow_html=True)
 
 # =====================================================
 # PROCESAMIENTO
@@ -374,31 +416,55 @@ if archivo and procesar:
         # MÉTRICAS PRINCIPALES
         # =====================================================
 
-        c1, c2, c3, c4, c5, c6 = st.columns(6)
+      c1, c2, c3, c4, c5, c6 = st.columns(6)
 
-        with c1:
-            st.metric("IRC", f"{irc:.0f}%")
+with c1:
+    st.markdown(f"""
+    <div class="metric-card">
+        <div class="metric-title">IRC</div>
+        <div class="metric-value">{irc:.0f}%</div>
+    </div>
+    """, unsafe_allow_html=True)
 
-        with c2:
-            st.metric("IAAM", f"{iaam:.0f}%")
+with c2:
+    st.markdown(f"""
+    <div class="metric-card">
+        <div class="metric-title">IAAM</div>
+        <div class="metric-value">{iaam:.0f}%</div>
+    </div>
+    """, unsafe_allow_html=True)
 
-        with c3:
-            st.metric("Escenario", escenario)
+with c3:
+    st.markdown(f"""
+    <div class="metric-card">
+        <div class="metric-title">Escenario</div>
+        <div class="metric-value metric-green">{escenario}</div>
+    </div>
+    """, unsafe_allow_html=True)
 
-        with c4:
-            st.metric("Criticidad", criticidad)
+with c4:
+    st.markdown(f"""
+    <div class="metric-card">
+        <div class="metric-title">Criticidad</div>
+        <div class="metric-value">{criticidad}</div>
+    </div>
+    """, unsafe_allow_html=True)
 
-        with c5:
-            st.metric(
-                "Indicadores críticos",
-                indicadores_criticos
-            )
+with c5:
+    st.markdown(f"""
+    <div class="metric-card">
+        <div class="metric-title">Indicadores críticos</div>
+        <div class="metric-value">{indicadores_criticos}</div>
+    </div>
+    """, unsafe_allow_html=True)
 
-        with c6:
-            st.metric(
-                "Categorías afectadas",
-                categorias_afectadas
-            )
+with c6:
+    st.markdown(f"""
+    <div class="metric-card">
+        <div class="metric-title">Categorías afectadas</div>
+        <div class="metric-value">{categorias_afectadas}</div>
+    </div>
+    """, unsafe_allow_html=True)
 
         # =====================================================
         # RESUMEN EJECUTIVO
