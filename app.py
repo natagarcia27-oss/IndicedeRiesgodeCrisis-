@@ -568,97 +568,178 @@ if archivo and procesar:
         </div>
         """, unsafe_allow_html=True)
 
-        col1, col2 = st.columns(2)
+        col1, col2 = st.columns([1,1])
 
-        # ======================================
+        # =====================================================
         # ESCENARIOS
-        # ======================================
+        # =====================================================
 
         with col1:
 
             with st.container(border=True):
 
-                st.markdown("#### Probabilidad de Escenarios")
+                st.markdown("### Escenario Dominante")
 
-                fig = go.Figure()
-
-                fig.add_trace(
-                    go.Bar(
-                        x=[
-                            "Estable",
-                            "Riesgo creciente",
-                            "Crítico"
-                        ],
-                        y=[
-                            escenario_estable * 100,
-                            escenario_creciente * 100,
-                            escenario_critico * 100
-                        ],
-                        text=[
-                            f"{escenario_estable*100:.0f}%",
-                            f"{escenario_creciente*100:.0f}%",
-                            f"{escenario_critico*100:.0f}%"
-                        ],
-                        textposition="outside",
-                        marker_color=[
-                            "#16a34a",
-                            "#d97706",
-                            "#dc2626"
-                        ]
-                    )
+                escenario_fig = go.Figure(
+                    data=[
+                        go.Pie(
+                            labels=[
+                                "Estable",
+                                "Riesgo creciente",
+                                "Crítico"
+                            ],
+                            values=[
+                                escenario_estable * 100,
+                                escenario_creciente * 100,
+                                escenario_critico * 100
+                            ],
+                            hole=0.70,
+                            marker=dict(
+                                colors=[
+                                    "#16a34a",
+                                    "#d97706",
+                                    "#dc2626"
+                                ]
+                            ),
+                            textinfo="percent",
+                            textfont_size=16
+                        )
+                    ]
                 )
 
-                fig.update_layout(
+                escenario_fig.update_layout(
                     height=420,
-                    plot_bgcolor="white",
-                    paper_bgcolor="white",
-                    margin=dict(l=20,r=20,t=40,b=20),
-                    yaxis_range=[0,100],
-                    showlegend=False
+                    margin=dict(
+                        t=20,
+                        b=20,
+                        l=20,
+                        r=20
+                    ),
+                    annotations=[
+                        dict(
+                            text=f"<b>{escenario}</b>",
+                            x=0.5,
+                            y=0.5,
+                            font_size=22,
+                            showarrow=False
+                        )
+                    ],
+                    showlegend=True
                 )
 
                 st.plotly_chart(
-                    fig,
+                    escenario_fig,
                     use_container_width=True
                 )
 
-        # ======================================
-        # IAAM
-        # ======================================
+                st.markdown(
+                    f"""
+                    <div style="
+                        text-align:center;
+                        font-size:16px;
+                        color:#475569;
+                        margin-top:-10px;
+                    ">
+                    Escenario predominante identificado por el modelo
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+        # =====================================================
+        # IAAM EJECUTIVO
+        # =====================================================
 
         with col2:
 
             with st.container(border=True):
 
-                st.markdown("#### Índice de Activación de Asistencia Militar")
-
-                gauge = go.Figure(
-                    go.Indicator(
-                        mode="gauge+number",
-                        value=iaam,
-                        number={"suffix":"%"},
-                        gauge={
-                            "axis":{"range":[0,100]},
-                            "bar":{"color":"#2563eb"},
-                            "steps":[
-                                {"range":[0,30],"color":"#dcfce7"},
-                                {"range":[30,60],"color":"#fef3c7"},
-                                {"range":[60,80],"color":"#fecaca"},
-                                {"range":[80,100],"color":"#fca5a5"}
-                            ]
-                        }
-                    )
+                alistamiento = generar_alistamiento(
+                    iaam
                 )
 
-                gauge.update_layout(
-                    height=420,
-                    margin=dict(l=20,r=20,t=40,b=20),
-                    paper_bgcolor="white"
+                st.markdown(
+                    """
+                    <div style="
+                        font-size:24px;
+                        font-weight:700;
+                        color:#0f172a;
+                        margin-bottom:10px;
+                    ">
+                        IAAM
+                    </div>
+                    """,
+                    unsafe_allow_html=True
                 )
 
-                st.plotly_chart(
-                    gauge,
-                    use_container_width=True
+                st.markdown(
+                    f"""
+                    <div style="
+                        font-size:64px;
+                        font-weight:800;
+                        color:#2563eb;
+                        text-align:center;
+                        margin-top:15px;
+                    ">
+                        {iaam:.0f}%
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+                st.progress(
+                    min(max(iaam / 100, 0), 1)
+                )
+
+                st.markdown("")
+
+                st.markdown(
+                    f"""
+                    <div style="
+                        background:#f8fafc;
+                        border-radius:12px;
+                        padding:18px;
+                        margin-top:15px;
+                    ">
+                        <div style="
+                            color:#64748b;
+                            font-size:12px;
+                            text-transform:uppercase;
+                            font-weight:700;
+                        ">
+                            Nivel de activación
+                        </div>
+
+                        <div style="
+                            font-size:22px;
+                            font-weight:800;
+                            color:#0f172a;
+                            margin-top:5px;
+                        ">
+                            {alistamiento["nivel"]}
+                        </div>
+
+                        <div style="
+                            margin-top:15px;
+                            color:#64748b;
+                            font-size:12px;
+                            text-transform:uppercase;
+                            font-weight:700;
+                        ">
+                            Intención estratégica
+                        </div>
+
+                        <div style="
+                            font-size:16px;
+                            color:#334155;
+                            margin-top:5px;
+                        ">
+                            {alistamiento["intencion"]}
+                        </div>
+
+                    </div>
+                    """,
+                    unsafe_allow_html=True
                 )
 
         st.caption("""
