@@ -412,59 +412,59 @@ if archivo and procesar:
 
         criticidad = determinar_criticidad(irc)
 
-# =====================================
-# MÉTRICAS PRINCIPALES
-# =====================================
+        # =====================================
+        # MÉTRICAS PRINCIPALES
+        # =====================================
 
-c1, c2, c3, c4, c5, c6 = st.columns(6)
+        c1, c2, c3, c4, c5, c6 = st.columns(6)
 
-with c1:
-st.markdown(f"""
-<div class="metric-card">
-    <div class="metric-title">IRC</div>
-    <div class="metric-value">{irc:.0f}%</div>
-</div>
-""", unsafe_allow_html=True)
+        with c1:
+            st.markdown(f"""
+            <div class="metric-card">
+                <div class="metric-title">IRC</div>
+                <div class="metric-value">{irc:.0f}%</div>
+            </div>
+            """, unsafe_allow_html=True)
 
-with c2:
-st.markdown(f"""
-<div class="metric-card">
-    <div class="metric-title">IAAM</div>
-    <div class="metric-value">{iaam:.0f}%</div>
-</div>
-""", unsafe_allow_html=True)
+        with c2:
+            st.markdown(f"""
+            <div class="metric-card">
+                <div class="metric-title">IAAM</div>
+                <div class="metric-value">{iaam:.0f}%</div>
+            </div>
+            """, unsafe_allow_html=True)
 
-with c3:
-st.markdown(f"""
-<div class="metric-card">
-    <div class="metric-title">Escenario</div>
-    <div class="metric-value metric-green">{escenario}</div>
-</div>
-""", unsafe_allow_html=True)
+        with c3:
+            st.markdown(f"""
+            <div class="metric-card">
+                <div class="metric-title">Escenario</div>
+                <div class="metric-value metric-green">{escenario}</div>
+            </div>
+            """, unsafe_allow_html=True)
 
-with c4:
-st.markdown(f"""
-<div class="metric-card">
-    <div class="metric-title">Criticidad</div>
-    <div class="metric-value">{criticidad}</div>
-</div>
-""", unsafe_allow_html=True)
+        with c4:
+            st.markdown(f"""
+            <div class="metric-card">
+                <div class="metric-title">Criticidad</div>
+                <div class="metric-value">{criticidad}</div>
+            </div>
+            """, unsafe_allow_html=True)
 
-with c5:
-st.markdown(f"""
-<div class="metric-card">
-    <div class="metric-title">Indicadores críticos</div>
-    <div class="metric-value">{indicadores_criticos}</div>
-</div>
-""", unsafe_allow_html=True)
+        with c5:
+            st.markdown(f"""
+            <div class="metric-card">
+                <div class="metric-title">Indicadores críticos</div>
+                <div class="metric-value">{indicadores_criticos}</div>
+            </div>
+            """, unsafe_allow_html=True)
 
-with c6:
-st.markdown(f"""
-<div class="metric-card">
-    <div class="metric-title">Categorías afectadas</div>
-    <div class="metric-value">{categorias_afectadas}</div>
-</div>
-""", unsafe_allow_html=True)
+        with c6:
+            st.markdown(f"""
+            <div class="metric-card">
+                <div class="metric-title">Categorías afectadas</div>
+                <div class="metric-value">{categorias_afectadas}</div>
+            </div>
+            """, unsafe_allow_html=True)
 
         # =====================================================
         # RESUMEN EJECUTIVO
