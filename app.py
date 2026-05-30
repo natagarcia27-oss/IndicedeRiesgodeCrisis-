@@ -246,7 +246,7 @@ if archivo and procesar:
         irc = float(hoja.iloc[fila, 10]) * 100
         iaam = float(hoja.iloc[fila, 12]) * 100
 
-        # ==========================================
+# ==========================================
 # INDICADORES CRÍTICOS
 # ==========================================
 
@@ -294,20 +294,34 @@ for categoria, filas in categorias.items():
 
     if tiene_critico:
         categorias_afectadas += 1
+    
+       for categoria, filas in categorias.items():
 
     tiene_critico = False
 
     for fila_cat in filas:
 
-        valor = str(hoja.iloc[fila_cat, 8]).strip().upper()
+        fila_excel = fila_cat + 1
 
-        if valor in ["X", "1", "CRITICO", "CRÍTICO"]:
+        valor = str(
+            hoja.iloc[fila_excel, 8]
+        ).strip().upper()
+
+        if valor in ["SI", "SÍ", "X", "1"]:
+
             tiene_critico = True
 
     if tiene_critico:
         categorias_afectadas += 1
 
-        criticidad = determinar_criticidad(irc)
+
+criticidad = determinar_criticidad(irc)
+
+escenario = obtener_escenario_dominante(
+    escenario_estable * 100,
+    escenario_creciente * 100,
+    escenario_critico * 100,
+)
 
         escenario = obtener_escenario_dominante(
             escenario_estable * 100,
@@ -334,7 +348,7 @@ for categoria, filas in categorias.items():
 
         # KPI
 
-       c1, c2, c3, c4, c5, c6 = st.columns(6)
+        c1, c2, c3, c4, c5, c6 = st.columns(6)
 
         with c1:
             st.metric(
@@ -359,17 +373,17 @@ for categoria, filas in categorias.items():
                 "Criticidad",
                 criticidad
             )
-with c5:
-    st.metric(
-        "Indicadores críticos",
-        indicadores_criticos
-    )
+       with c5:
+            st.metric(
+                "Indicadores críticos",
+                indicadores_criticos
+            )
 
-with c6:
-    st.metric(
-        "Categorías afectadas",
-        categorias_afectadas
-    )
+       with c6:
+            st.metric(
+                "Categorías afectadas",
+                categorias_afectadas
+            )
 
         # RESUMEN
 
