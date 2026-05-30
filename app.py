@@ -552,213 +552,213 @@ if archivo and procesar:
                 "🟢 ALERTA INFORMATIVA\n\nCondiciones compatibles con estabilidad funcional."
             )
 
-# =====================================================
-# VISUALIZACIÓN ESTRATÉGICA
-# =====================================================
-
-st.markdown("""
-<h2 style="
-    color:#0f172a;
-    font-size:32px;
-    font-weight:800;
-    margin-top:25px;
-    margin-bottom:20px;
-">
-Visualización Estratégica
-</h2>
-""", unsafe_allow_html=True)
-
-graf1, graf2 = st.columns(2)
-
-# =====================================================
-# DONUT EJECUTIVO
-# =====================================================
-
-with graf1:
-
-    fig_donut = go.Figure(
-        data=[
-            go.Pie(
-                labels=[
-                    "Estable",
-                    "Riesgo creciente",
-                    "Crítico"
-                ],
-                values=[
-                    escenario_estable * 100,
-                    escenario_creciente * 100,
-                    escenario_critico * 100
-                ],
-                hole=0.72,
-                sort=False,
-                textinfo="percent",
-                textfont=dict(
-                    color="white",
-                    size=16
+        # =====================================================
+        # VISUALIZACIÓN ESTRATÉGICA
+        # =====================================================
+        
+        st.markdown("""
+        <h2 style="
+            color:#0f172a;
+            font-size:32px;
+            font-weight:800;
+            margin-top:25px;
+            margin-bottom:20px;
+        ">
+        Visualización Estratégica
+        </h2>
+        """, unsafe_allow_html=True)
+        
+        graf1, graf2 = st.columns(2)
+        
+        # =====================================================
+        # DONUT EJECUTIVO
+        # =====================================================
+        
+        with graf1:
+        
+            fig_donut = go.Figure(
+                data=[
+                    go.Pie(
+                        labels=[
+                            "Estable",
+                            "Riesgo creciente",
+                            "Crítico"
+                        ],
+                        values=[
+                            escenario_estable * 100,
+                            escenario_creciente * 100,
+                            escenario_critico * 100
+                        ],
+                        hole=0.72,
+                        sort=False,
+                        textinfo="percent",
+                        textfont=dict(
+                            color="white",
+                            size=16
+                        ),
+                        marker=dict(
+                            colors=[
+                                "#16a34a",
+                                "#d97706",
+                                "#dc2626"
+                            ]
+                        )
+                    )
+                ]
+            )
+        
+            fig_donut.update_layout(
+        
+                title=dict(
+                    text="Escenario Dominante",
+                    font=dict(
+                        size=24,
+                        color="#0f172a"
+                    )
                 ),
-                marker=dict(
-                    colors=[
-                        "#16a34a",
-                        "#d97706",
-                        "#dc2626"
-                    ]
+        
+                height=500,
+        
+                legend=dict(
+                    orientation="h",
+                    y=-0.05,
+                    x=0.15
+                ),
+        
+                margin=dict(
+                    t=80,
+                    b=40,
+                    l=20,
+                    r=20
+                ),
+        
+                paper_bgcolor="white",
+        
+                annotations=[
+                    dict(
+                        text=f"<b>{escenario}</b>",
+                        x=0.5,
+                        y=0.5,
+                        showarrow=False,
+                        font=dict(
+                            size=32,
+                            color="#0f172a"
+                        )
+                    )
+                ]
+            )
+        
+            st.plotly_chart(
+                fig_donut,
+                use_container_width=True
+            )
+        
+        # =====================================================
+        # IAAM CORPORATIVO PREMIUM
+        # =====================================================
+        
+        with graf2:
+        
+            fig_iaam = go.Figure(
+                go.Indicator(
+                    mode="gauge+number",
+        
+                    value=iaam,
+        
+                    number={
+                        "suffix": "%",
+                        "font": {
+                            "size": 54,
+                            "color": "#0f172a"
+                        }
+                    },
+        
+                    title={
+                        "text": "Índice de Activación de Asistencia Militar",
+                        "font": {
+                            "size": 22,
+                            "color": "#0f172a"
+                        }
+                    },
+        
+                    gauge={
+                        "axis": {
+                            "range": [0, 100],
+                            "tickwidth": 1,
+                            "tickcolor": "#94a3b8"
+                        },
+        
+                        "bar": {
+                            "color": "#2563eb",
+                            "thickness": 0.35
+                        },
+        
+                        "bgcolor": "white",
+        
+                        "borderwidth": 0,
+        
+                        "steps": [
+                            {
+                                "range": [0, 30],
+                                "color": "#dcfce7"
+                            },
+                            {
+                                "range": [30, 60],
+                                "color": "#fef3c7"
+                            },
+                            {
+                                "range": [60, 100],
+                                "color": "#fee2e2"
+                            }
+                        ],
+        
+                        "threshold": {
+                            "line": {
+                                "color": "#0f172a",
+                                "width": 6
+                            },
+                            "thickness": 0.8,
+                            "value": iaam
+                        }
+                    }
                 )
             )
-        ]
-    )
-
-    fig_donut.update_layout(
-
-        title=dict(
-            text="Escenario Dominante",
-            font=dict(
-                size=24,
-                color="#0f172a"
-            )
-        ),
-
-        height=500,
-
-        legend=dict(
-            orientation="h",
-            y=-0.05,
-            x=0.15
-        ),
-
-        margin=dict(
-            t=80,
-            b=40,
-            l=20,
-            r=20
-        ),
-
-        paper_bgcolor="white",
-
-        annotations=[
-            dict(
-                text=f"<b>{escenario}</b>",
-                x=0.5,
-                y=0.5,
-                showarrow=False,
+        
+            fig_iaam.update_layout(
+        
+                height=500,
+        
+                margin=dict(
+                    t=80,
+                    b=20,
+                    l=20,
+                    r=20
+                ),
+        
+                paper_bgcolor="white",
+        
                 font=dict(
-                    size=32,
                     color="#0f172a"
                 )
             )
-        ]
-    )
-
-    st.plotly_chart(
-        fig_donut,
-        use_container_width=True
-    )
-
-# =====================================================
-# IAAM CORPORATIVO PREMIUM
-# =====================================================
-
-with graf2:
-
-    fig_iaam = go.Figure(
-        go.Indicator(
-            mode="gauge+number",
-
-            value=iaam,
-
-            number={
-                "suffix": "%",
-                "font": {
-                    "size": 54,
-                    "color": "#0f172a"
-                }
-            },
-
-            title={
-                "text": "Índice de Activación de Asistencia Militar",
-                "font": {
-                    "size": 22,
-                    "color": "#0f172a"
-                }
-            },
-
-            gauge={
-                "axis": {
-                    "range": [0, 100],
-                    "tickwidth": 1,
-                    "tickcolor": "#94a3b8"
-                },
-
-                "bar": {
-                    "color": "#2563eb",
-                    "thickness": 0.35
-                },
-
-                "bgcolor": "white",
-
-                "borderwidth": 0,
-
-                "steps": [
-                    {
-                        "range": [0, 30],
-                        "color": "#dcfce7"
-                    },
-                    {
-                        "range": [30, 60],
-                        "color": "#fef3c7"
-                    },
-                    {
-                        "range": [60, 100],
-                        "color": "#fee2e2"
-                    }
-                ],
-
-                "threshold": {
-                    "line": {
-                        "color": "#0f172a",
-                        "width": 6
-                    },
-                    "thickness": 0.8,
-                    "value": iaam
-                }
-            }
-        )
-    )
-
-    fig_iaam.update_layout(
-
-        height=500,
-
-        margin=dict(
-            t=80,
-            b=20,
-            l=20,
-            r=20
-        ),
-
-        paper_bgcolor="white",
-
-        font=dict(
-            color="#0f172a"
-        )
-    )
-
-    st.plotly_chart(
-        fig_iaam,
-        use_container_width=True
-    )
-
-st.markdown("""
-<div style="
-    text-align:center;
-    color:#64748b;
-    font-size:12px;
-    margin-top:10px;
-    margin-bottom:20px;
-">
-IRC: Índice de Riesgo de Crisis &nbsp;&nbsp;|&nbsp;&nbsp;
-IAAM: Índice de Activación de Asistencia Militar
-</div>
-""", unsafe_allow_html=True)
+        
+            st.plotly_chart(
+                fig_iaam,
+                use_container_width=True
+            )
+        
+        st.markdown("""
+        <div style="
+            text-align:center;
+            color:#64748b;
+            font-size:12px;
+            margin-top:10px;
+            margin-bottom:20px;
+        ">
+        IRC: Índice de Riesgo de Crisis &nbsp;&nbsp;|&nbsp;&nbsp;
+        IAAM: Índice de Activación de Asistencia Militar
+        </div>
+        """, unsafe_allow_html=True)
         
         # =====================================================
         # RIESGO POR CATEGORÍA
