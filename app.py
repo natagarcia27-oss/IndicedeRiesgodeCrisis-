@@ -416,7 +416,7 @@ if archivo and procesar:
         # MÉTRICAS PRINCIPALES
         # =====================================================
 
-          c1, c2, c3, c4, c5, c6 = st.columns(6)
+        c1, c2, c3, c4, c5, c6 = st.columns(6)
     
     with c1:
         st.markdown(f"""
