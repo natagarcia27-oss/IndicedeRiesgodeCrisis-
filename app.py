@@ -298,7 +298,7 @@ if archivo and procesar:
             if tiene_critico:
                 categorias_afectadas += 1
 
-                   criticidad = determinar_criticidad(irc)
+            criticidad = determinar_criticidad(irc)
 
             escenario = obtener_escenario_dominante(
                 escenario_estable * 100,
