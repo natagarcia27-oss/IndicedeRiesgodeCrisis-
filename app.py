@@ -273,7 +273,7 @@ if archivo and procesar:
 
         # KPI
 
-                c1, c2, c3, c4 = st.columns(4)
+        c1, c2, c3, c4 = st.columns(4)
 
         with c1:
             st.metric(
