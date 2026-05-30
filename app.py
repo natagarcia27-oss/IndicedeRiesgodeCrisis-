@@ -309,13 +309,37 @@ if archivo and procesar:
 
         # ALERTAS
 
-        st.subheader(
-            "Alertas Tempranas"
-        )
+        st.subheader("Alertas Tempranas")
 
-        st.warning(
-            f"{alerta_titulo}: {alerta_texto}"
-        )
+if irc >= 70:
+
+    st.error(
+        "ALERTA CRÍTICA\n\nConvergencia de factores críticos con capacidad de escalamiento."
+    )
+
+    st.warning(
+        "ALERTA PREVENTIVA\n\nIncremento sostenido de indicadores de conflictividad."
+    )
+
+    st.info(
+        "ALERTA INFORMATIVA\n\nMonitoreo permanente."
+    )
+
+elif irc >= 40:
+
+    st.warning(
+        "ALERTA PREVENTIVA\n\nIncremento sostenido de indicadores de conflictividad."
+    )
+
+    st.info(
+        "ALERTA INFORMATIVA\n\nMonitoreo permanente."
+    )
+
+else:
+
+    st.info(
+        "ALERTA INFORMATIVA\n\nCondiciones compatibles con estabilidad funcional."
+    )
 
                 # GRÁFICOS
 
@@ -327,11 +351,16 @@ if archivo and procesar:
 
             fig.add_trace(
                 go.Bar(
-                    x=[
-                        "Estable",
-                        "Riesgo creciente",
-                        "Crítico"
-                    ],
+    x=[
+        "Estable",
+        "Riesgo creciente",
+        "Crítico"
+    ],
+    marker_color=[
+        "#2E7D32",   # Verde
+        "#D4A017",   # Amarillo quemado
+        "#C62828"    # Rojo
+    ],
                     y=[
                         escenario_estable * 100,
                         escenario_creciente * 100,
@@ -356,6 +385,46 @@ if archivo and procesar:
                 fig,
                 use_container_width=True
             )
+            st.subheader("Riesgo por Categoría")
+
+radar = go.Figure()
+
+radar.add_trace(
+    go.Scatterpolar(
+        r=[
+            escenario_estable * 100,
+            irc,
+            escenario_creciente * 100,
+            iaam,
+            escenario_critico * 100,
+            irc
+        ],
+        theta=[
+            "Legitimidad",
+            "Violencia",
+            "Civil-Militar",
+            "Logística",
+            "Digital",
+            "Movilización"
+        ],
+        fill="toself"
+    )
+)
+
+radar.update_layout(
+    polar=dict(
+        radialaxis=dict(
+            visible=True,
+            range=[0, 100]
+        )
+    ),
+    height=500
+)
+
+st.plotly_chart(
+    radar,
+    use_container_width=True
+)
 
         with col2:
 
