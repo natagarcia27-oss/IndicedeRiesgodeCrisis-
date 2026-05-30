@@ -780,47 +780,21 @@ if archivo and procesar:
             st.markdown(
                 f"""
                 <div style="
-                    background:white;
-                    border:1px solid #e5e7eb;
-                    border-radius:18px;
-                    padding:20px;
-                    margin-top:-10px;
                     text-align:center;
-                    box-shadow:0 4px 12px rgba(0,0,0,0.05);
+                    margin-top:-15px;
+                    padding:12px;
                 ">
-        
-                    <div style="
-                        font-size:12px;
-                        color:#64748b;
-                        font-weight:800;
-                        text-transform:uppercase;
-                        letter-spacing:1px;
-                    ">
-                        Nivel de Activación
-                    </div>
-        
-                    <div style="
-                        margin-top:10px;
-                        font-size:26px;
-                        font-weight:900;
+                    <span style="
                         color:{color_iaam};
+                        font-size:22px;
+                        font-weight:800;
                     ">
                         {nivel_iaam}
-                    </div>
-        
-                    <div style="
-                        margin-top:10px;
-                        font-size:15px;
-                        color:#475569;
-                    ">
-                        {generar_alistamiento(iaam)["intencion"]}
-                    </div>
-        
+                    </span>
                 </div>
                 """,
                 unsafe_allow_html=True
-            )
-        
+            )        
         # =====================================================
         # RIESGO POR CATEGORÍA
         # =====================================================
