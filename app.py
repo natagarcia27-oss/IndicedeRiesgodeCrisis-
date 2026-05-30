@@ -214,58 +214,56 @@ if st.sidebar.button("Nueva evaluación"):
 # HEADER EJECUTIVO
 # =====================================================
 
-st.markdown("""
+fecha_actual = datetime.now().strftime("%d/%m/%Y %H:%M")
+
+st.markdown(f"""
 <style>
 
-.header-container{
-    background:#ffffff;
-    border:1px solid #dce3ea;
+.header-container {{
+    background:white;
+    border:1px solid #dfe6ee;
     border-radius:18px;
-    padding:28px;
+    padding:30px;
     margin-bottom:25px;
-    box-shadow:0 4px 14px rgba(0,0,0,0.06);
-}
+    box-shadow:0 4px 15px rgba(0,0,0,0.05);
+}}
 
-.header-top{
+.header-top {{
     color:#4f6b8a;
     font-size:0.85rem;
-    font-weight:600;
+    font-weight:700;
     letter-spacing:1px;
-    text-transform:uppercase;
-}
+}}
 
-.header-title{
+.header-title {{
     color:#1f2d3d;
     font-size:2.3rem;
     font-weight:700;
     line-height:1.2;
-    margin-top:8px;
-}
-
-.header-subtitle{
-    color:#607080;
-    font-size:1rem;
     margin-top:10px;
-}
+}}
 
-.header-divider{
-    height:1px;
-    background:#e5eaf0;
+.header-subtitle {{
+    color:#6c7a89;
+    margin-top:10px;
+    font-size:1rem;
+}}
+
+.header-divider {{
+    border-top:1px solid #e5eaef;
     margin-top:18px;
     margin-bottom:18px;
-}
+}}
 
-.header-footer{
+.header-footer {{
     display:flex;
     justify-content:space-between;
-    color:#6b7b8c;
+    color:#6c7a89;
     font-size:0.9rem;
-}
+}}
 
 </style>
-""", unsafe_allow_html=True)
 
-st.markdown(f"""
 <div class="header-container">
 
     <div class="header-top">
@@ -288,11 +286,12 @@ st.markdown(f"""
         </div>
 
         <div>
-            {datetime.now().strftime("%d/%m/%Y %H:%M")}
+            {fecha_actual}
         </div>
     </div>
 
 </div>
+
 """, unsafe_allow_html=True)
 
 # =====================================================
