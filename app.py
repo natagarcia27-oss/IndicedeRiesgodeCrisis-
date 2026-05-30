@@ -571,78 +571,109 @@ if archivo and procesar:
         graf1, graf2 = st.columns(2)
         
         # =====================================================
-        # DONUT EJECUTIVO
+        # TARJETA 1 - PROBABILIDAD DE ESCENARIOS
         # =====================================================
         
         with graf1:
         
-            fig_donut = go.Figure(
-                data=[
-                    go.Pie(
-                        labels=[
-                            "Estable",
-                            "Riesgo creciente",
-                            "Crítico"
-                        ],
-                        values=[
-                            escenario_estable * 100,
-                            escenario_creciente * 100,
-                            escenario_critico * 100
-                        ],
-                        hole=0.72,
-                        sort=False,
-                        textinfo="percent",
-                        textfont=dict(
-                            color="white",
-                            size=16
-                        ),
-                        marker=dict(
-                            colors=[
-                                "#16a34a",
-                                "#d97706",
-                                "#dc2626"
-                            ]
-                        )
+            st.markdown("""
+            <div style="
+                background:white;
+                border:1px solid #e5e7eb;
+                border-radius:20px;
+                padding:20px;
+                box-shadow:0 4px 12px rgba(0,0,0,0.05);
+            ">
+            <h3 style="
+                margin-top:0;
+                color:#0f172a;
+                font-size:24px;
+                font-weight:700;
+            ">
+            Probabilidad de Escenarios
+            </h3>
+            </div>
+            """, unsafe_allow_html=True)
+        
+            dominante_valor = max(
+                escenario_estable * 100,
+                escenario_creciente * 100,
+                escenario_critico * 100
+            )
+        
+            fig_donut = go.Figure()
+        
+            fig_donut.add_trace(
+                go.Pie(
+                    labels=[
+                        "Estable",
+                        "Riesgo creciente",
+                        "Crítico"
+                    ],
+                    values=[
+                        escenario_estable * 100,
+                        escenario_creciente * 100,
+                        escenario_critico * 100
+                    ],
+                    hole=0.72,
+                    sort=False,
+                    textinfo="percent",
+                    textfont=dict(
+                        color="white",
+                        size=16
+                    ),
+                    marker=dict(
+                        colors=[
+                            "#16a34a",
+                            "#d97706",
+                            "#dc2626"
+                        ]
                     )
-                ]
+                )
             )
         
             fig_donut.update_layout(
         
-                title=dict(
-                    text="Escenario Dominante",
-                    font=dict(
-                        size=24,
-                        color="#0f172a"
-                    )
-                ),
-        
-                height=500,
-        
-                legend=dict(
-                    orientation="h",
-                    y=-0.05,
-                    x=0.15
-                ),
+                height=430,
         
                 margin=dict(
-                    t=80,
-                    b=40,
+                    t=20,
+                    b=20,
                     l=20,
                     r=20
                 ),
         
                 paper_bgcolor="white",
         
+                showlegend=True,
+        
+                legend=dict(
+                    orientation="h",
+                    y=-0.05,
+                    x=0.10
+                ),
+        
                 annotations=[
+        
                     dict(
-                        text=f"<b>{escenario}</b>",
+                        text=f"<b>{dominante_valor:.1f}%</b>",
                         x=0.5,
-                        y=0.5,
+                        y=0.54,
                         showarrow=False,
                         font=dict(
-                            size=32,
+                            size=34,
                             color="#0f172a"
+                        )
+                    ),
+        
+                    dict(
+                        text=f"{escenario}",
+                        x=0.5,
+                        y=0.42,
+                        showarrow=False,
+                        font=dict(
+                            size=20,
+                            color="#64748b"
                         )
                     )
                 ]
@@ -654,71 +685,109 @@ if archivo and procesar:
             )
         
         # =====================================================
-        # IAAM CORPORATIVO PREMIUM
+        # TARJETA 2 - IAAM EJECUTIVO
         # =====================================================
         
         with graf2:
         
+            if iaam <= 30:
+                color_iaam = "#16a34a"
+                nivel_iaam = "BAJA PROBABILIDAD"
+        
+            elif iaam <= 60:
+                color_iaam = "#d97706"
+                nivel_iaam = "PROBABLE"
+        
+            elif iaam <= 80:
+                color_iaam = "#ea580c"
+                nivel_iaam = "ALTA PROBABILIDAD"
+        
+            else:
+                color_iaam = "#dc2626"
+                nivel_iaam = "INTERVENCIÓN INMINENTE"
+        
+            st.markdown("""
+            <div style="
+                background:white;
+                border:1px solid #e5e7eb;
+                border-radius:20px;
+                padding:20px;
+                box-shadow:0 4px 12px rgba(0,0,0,0.05);
+            ">
+            <h3 style="
+                margin-top:0;
+                color:#0f172a;
+                font-size:24px;
+                font-weight:700;
+            ">
+            Índice de Activación de Asistencia Militar
+            </h3>
+            </div>
+            """, unsafe_allow_html=True)
+        
             fig_iaam = go.Figure(
                 go.Indicator(
+        
                     mode="gauge+number",
         
                     value=iaam,
         
                     number={
-                        "suffix": "%",
-                        "font": {
-                            "size": 54,
-                            "color": "#0f172a"
-                        }
-                    },
-        
-                    title={
-                        "text": "Índice de Activación de Asistencia Militar",
-                        "font": {
-                            "size": 22,
-                            "color": "#0f172a"
+                        "suffix":"%",
+                        "font":{
+                            "size":50,
+                            "color":"#0f172a"
                         }
                     },
         
                     gauge={
-                        "axis": {
-                            "range": [0, 100],
-                            "tickwidth": 1,
-                            "tickcolor": "#94a3b8"
+        
+                        "shape":"angular",
+        
+                        "axis":{
+                            "range":[0,100],
+                            "tickwidth":1,
+                            "tickcolor":"#94a3b8"
                         },
         
-                        "bar": {
-                            "color": "#2563eb",
-                            "thickness": 0.35
+                        "bar":{
+                            "color":color_iaam,
+                            "thickness":0.40
                         },
         
-                        "bgcolor": "white",
+                        "bgcolor":"white",
         
-                        "borderwidth": 0,
+                        "steps":[
         
-                        "steps": [
                             {
-                                "range": [0, 30],
-                                "color": "#dcfce7"
+                                "range":[0,30],
+                                "color":"#dcfce7"
                             },
+        
                             {
-                                "range": [30, 60],
-                                "color": "#fef3c7"
+                                "range":[30,60],
+                                "color":"#fef3c7"
                             },
+        
                             {
-                                "range": [60, 100],
-                                "color": "#fee2e2"
+                                "range":[60,80],
+                                "color":"#fed7aa"
+                            },
+        
+                            {
+                                "range":[80,100],
+                                "color":"#fee2e2"
                             }
+        
                         ],
         
-                        "threshold": {
-                            "line": {
-                                "color": "#0f172a",
-                                "width": 6
+                        "threshold":{
+                            "line":{
+                                "color":"#111827",
+                                "width":7
                             },
-                            "thickness": 0.8,
-                            "value": iaam
+                            "thickness":1,
+                            "value":iaam
                         }
                     }
                 )
@@ -726,11 +795,11 @@ if archivo and procesar:
         
             fig_iaam.update_layout(
         
-                height=500,
+                height=430,
         
                 margin=dict(
-                    t=80,
-                    b=20,
+                    t=30,
+                    b=0,
                     l=20,
                     r=20
                 ),
@@ -747,6 +816,43 @@ if archivo and procesar:
                 use_container_width=True
             )
         
+            st.markdown(f"""
+            <div style="
+                background:#f8fafc;
+                border-radius:14px;
+                padding:18px;
+                margin-top:-20px;
+                border:1px solid #e5e7eb;
+                text-align:center;
+            ">
+                <div style="
+                    font-size:12px;
+                    font-weight:700;
+                    color:#64748b;
+                    letter-spacing:1px;
+                ">
+                NIVEL DE ACTIVACIÓN
+                </div>
+        
+                <div style="
+                    font-size:22px;
+                    font-weight:800;
+                    color:{color_iaam};
+                    margin-top:6px;
+                ">
+                {nivel_iaam}
+                </div>
+        
+                <div style="
+                    font-size:14px;
+                    color:#475569;
+                    margin-top:8px;
+                ">
+                {generar_alistamiento(iaam)["intencion"]}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        
         st.markdown("""
         <div style="
             text-align:center;
@@ -755,8 +861,8 @@ if archivo and procesar:
             margin-top:10px;
             margin-bottom:20px;
         ">
-        IRC: Índice de Riesgo de Crisis &nbsp;&nbsp;|&nbsp;&nbsp;
-        IAAM: Índice de Activación de Asistencia Militar
+        IRC · Índice de Riesgo de Crisis &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+        IAAM · Índice de Activación de Asistencia Militar
         </div>
         """, unsafe_allow_html=True)
         
