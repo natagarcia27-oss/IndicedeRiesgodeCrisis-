@@ -476,8 +476,44 @@ if archivo and procesar:
             escenario
         )
 
-        st.subheader("Resumen Ejecutivo Automatizado")
-        st.info(resumen)
+        # =====================================
+        # RESUMEN EJECUTIVO
+        # =====================================
+
+        st.markdown("""
+        <div style="
+            background:#ffffff;
+            border:1px solid #e5e7eb;
+            border-radius:16px;
+            padding:22px;
+            margin-top:20px;
+            margin-bottom:20px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.04);
+        ">
+            <h3 style="
+                margin-top:0;
+                color:#0f172a;
+                font-size:22px;
+                font-weight:700;
+            ">
+                Resumen Ejecutivo Automatizado
+            </h3>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown(f"""
+        <div style="
+            background:#f8fafc;
+            border-left:5px solid #2563eb;
+            border-radius:12px;
+            padding:20px;
+            color:#334155;
+            line-height:1.7;
+            margin-bottom:25px;
+        ">
+            {resumen.replace(chr(10), '<br><br>')}
+        </div>
+        """, unsafe_allow_html=True)
 
         # =====================================================
         # ALERTAS
