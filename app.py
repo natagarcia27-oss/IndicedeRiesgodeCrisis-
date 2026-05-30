@@ -297,32 +297,58 @@ if archivo and procesar:
 
             if tiene_critico:
                 categorias_afectadas += 1
+            
+            # FIN DEL FOR DE CATEGORÍAS
+            
+                criticidad = determinar_criticidad(irc)
+    
+                escenario = obtener_escenario_dominante(
+                    escenario_estable * 100,
+                    escenario_creciente * 100,
+                    escenario_critico * 100
+                )
+    c1, c2, c3, c4, c5, c6 = st.columns(6)
 
-            criticidad = determinar_criticidad(irc)
+with c1:
+    st.metric("IRC", f"{irc:.0f}%")
 
-            escenario = obtener_escenario_dominante(
-                escenario_estable * 100,
-                escenario_creciente * 100,
-                escenario_critico * 100
-            )
+with c2:
+    st.metric("IAAM", f"{iaam:.0f}%")
 
-            # RESUMEN
+with c3:
+    st.metric("Escenario", escenario)
 
-            resumen = generar_resumen(
-                irc,
-                iaam,
-                escenario
-            )
+with c4:
+    st.metric("Criticidad", criticidad)
 
-            st.subheader(
-                "Resumen Ejecutivo Automatizado"
-            )
+with c5:
+    st.metric(
+        "Indicadores críticos",
+        indicadores_criticos
+    )
 
-            st.info(resumen)
-
-            # ALERTAS
-
-            st.subheader("Alertas Tempranas")
+with c6:
+    st.metric(
+        "Categorías afectadas",
+        categorias_afectadas
+    )
+                # RESUMEN
+    
+                resumen = generar_resumen(
+                    irc,
+                    iaam,
+                    escenario
+                )
+    
+                st.subheader(
+                    "Resumen Ejecutivo Automatizado"
+                )
+    
+                st.info(resumen)
+    
+                # ALERTAS
+    
+                st.subheader("Alertas Tempranas")
 
         if irc >= 70:
 
@@ -426,13 +452,13 @@ if archivo and procesar:
                         hoja.iloc[fila_excel, 8]
                     ).strip().upper()
 
-                    if valor_estable in ["SI", "SÍ", "X", "1"]:
+                   if "✓" in valor_estable or valor_estable in ["SI", "SÍ", "X", "1"]:
                         estable += 1
 
-                    if valor_creciente in ["SI", "SÍ", "X", "1"]:
+                    if valor_creciente or valor_creciente in ["SI", "SÍ", "X", "1"]:
                         creciente += 1
 
-                    if valor_critico in ["SI", "SÍ", "X", "1"]:
+                    if valor_critico or valor_critico in ["SI", "SÍ", "X", "1"]:
                         critico += 1
 
                 total = estable + creciente + critico
