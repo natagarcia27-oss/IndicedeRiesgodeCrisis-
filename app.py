@@ -515,7 +515,7 @@ if archivo and procesar:
         </div>
         """, unsafe_allow_html=True)
 
-                # =====================================================
+        # =====================================================
         # ALERTAS
         # =====================================================
 
@@ -556,9 +556,39 @@ if archivo and procesar:
         # GRÁFICOS PRINCIPALES
         # =====================================================
 
+        st.markdown("""
+        <style>
+
+        .section-title{
+            font-size:22px;
+            font-weight:700;
+            color:#0f172a;
+            margin-top:25px;
+            margin-bottom:15px;
+        }
+
+        </style>
+        """, unsafe_allow_html=True)
+
+        st.markdown(
+            '<div class="section-title">Visualización Estratégica</div>',
+            unsafe_allow_html=True
+        )
+
         col1, col2 = st.columns(2)
 
         with col1:
+
+            st.markdown("""
+            <div style="
+                background:white;
+                border:1px solid #e5e7eb;
+                border-radius:16px;
+                padding:15px;
+                margin-bottom:15px;
+                box-shadow:0 2px 8px rgba(0,0,0,0.04);
+            ">
+            """, unsafe_allow_html=True)
 
             fig = go.Figure()
 
@@ -581,17 +611,19 @@ if archivo and procesar:
                     ],
                     textposition="outside",
                     marker_color=[
-                        "#2E7D32",
-                        "#D4A017",
-                        "#C62828"
+                        "#16a34a",
+                        "#d97706",
+                        "#dc2626"
                     ]
                 )
             )
 
             fig.update_layout(
                 title="Probabilidad de cada escenario",
-                yaxis_title="Porcentaje",
-                yaxis_range=[0, 100]
+                yaxis_range=[0,100],
+                height=420,
+                plot_bgcolor="white",
+                paper_bgcolor="white"
             )
 
             st.plotly_chart(
@@ -599,40 +631,58 @@ if archivo and procesar:
                 use_container_width=True
             )
 
+            st.markdown("</div>", unsafe_allow_html=True)
+
         with col2:
+
+            st.markdown("""
+            <div style="
+                background:white;
+                border:1px solid #e5e7eb;
+                border-radius:16px;
+                padding:15px;
+                margin-bottom:15px;
+                box-shadow:0 2px 8px rgba(0,0,0,0.04);
+            ">
+            """, unsafe_allow_html=True)
 
             gauge = go.Figure(
                 go.Indicator(
                     mode="gauge+number",
                     value=iaam,
-                    title={"text": "IAAM (%)"},
-                    number={"suffix": "%"},
+                    title={"text":"IAAM (%)"},
+                    number={"suffix":"%"},
                     gauge={
-                        "axis": {"range": [0, 100]},
-                        "bar": {"thickness": 0.3},
-                        "steps": [
-                            {"range": [0, 30], "color": "#d9ead3"},
-                            {"range": [30, 60], "color": "#fff2cc"},
-                            {"range": [60, 80], "color": "#f4cccc"},
-                            {"range": [80, 100], "color": "#ea9999"}
+                        "axis":{"range":[0,100]},
+                        "bar":{"thickness":0.3},
+                        "steps":[
+                            {"range":[0,30],"color":"#dcfce7"},
+                            {"range":[30,60],"color":"#fef3c7"},
+                            {"range":[60,80],"color":"#fecaca"},
+                            {"range":[80,100],"color":"#fca5a5"}
                         ]
                     }
                 )
             )
 
-            gauge.update_layout(height=450)
+            gauge.update_layout(
+                height=420,
+                paper_bgcolor="white"
+            )
 
             st.plotly_chart(
                 gauge,
                 use_container_width=True
             )
 
+            st.markdown("</div>", unsafe_allow_html=True)
+
         st.caption("""
 IRC: Índice de Riesgo de Crisis
 
 IAAM: Índice de Activación de Asistencia Militar
 """)
-
+        
         # =====================================================
         # RIESGO POR CATEGORÍA
         # =====================================================
