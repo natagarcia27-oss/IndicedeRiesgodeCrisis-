@@ -552,232 +552,213 @@ if archivo and procesar:
                 "🟢 ALERTA INFORMATIVA\n\nCondiciones compatibles con estabilidad funcional."
             )
 
-        # =====================================================
-        # VISUALIZACIÓN ESTRATÉGICA
-        # =====================================================
+# =====================================================
+# VISUALIZACIÓN ESTRATÉGICA
+# =====================================================
 
-        st.markdown(
-            """
-            <h2 style="
-                color:#0f172a;
-                font-size:32px;
-                font-weight:800;
-                margin-top:25px;
-                margin-bottom:20px;
-            ">
-                Visualización Estratégica
-            </h2>
-            """,
-            unsafe_allow_html=True
-        )
+st.markdown("""
+<h2 style="
+    color:#0f172a;
+    font-size:32px;
+    font-weight:800;
+    margin-top:25px;
+    margin-bottom:20px;
+">
+Visualización Estratégica
+</h2>
+""", unsafe_allow_html=True)
 
-        graf1, graf2 = st.columns(2)
+graf1, graf2 = st.columns(2)
 
-        # =====================================================
-        # ESCENARIO DOMINANTE
-        # =====================================================
+# =====================================================
+# DONUT EJECUTIVO
+# =====================================================
 
-        with graf1:
+with graf1:
 
-            fig_donut = go.Figure()
-
-            fig_donut.add_trace(
-                go.Pie(
-                    labels=[
-                        "Estable",
-                        "Riesgo creciente",
-                        "Crítico"
-                    ],
-                    values=[
-                        escenario_estable * 100,
-                        escenario_creciente * 100,
-                        escenario_critico * 100
-                    ],
-                    hole=0.72,
-                    marker=dict(
-                        colors=[
-                            "#16a34a",
-                            "#d97706",
-                            "#dc2626"
-                        ]
-                    ),
-                    textinfo="percent",
-                    textfont=dict(
-                        color="white",
-                        size=16
-                    ),
-                    sort=False
+    fig_donut = go.Figure(
+        data=[
+            go.Pie(
+                labels=[
+                    "Estable",
+                    "Riesgo creciente",
+                    "Crítico"
+                ],
+                values=[
+                    escenario_estable * 100,
+                    escenario_creciente * 100,
+                    escenario_critico * 100
+                ],
+                hole=0.72,
+                sort=False,
+                textinfo="percent",
+                textfont=dict(
+                    color="white",
+                    size=16
+                ),
+                marker=dict(
+                    colors=[
+                        "#16a34a",
+                        "#d97706",
+                        "#dc2626"
+                    ]
                 )
             )
+        ]
+    )
 
-            fig_donut.update_layout(
-                title=dict(
-                    text="Escenario Dominante",
-                    font=dict(
-                        size=22,
-                        color="#0f172a"
-                    )
-                ),
-                height=450,
-                margin=dict(
-                    t=70,
-                    b=20,
-                    l=20,
-                    r=20
-                ),
-                paper_bgcolor="white",
-                plot_bgcolor="white",
-                annotations=[
-                    dict(
-                        text=f"<b>{escenario}</b>",
-                        x=0.5,
-                        y=0.5,
-                        showarrow=False,
-                        font=dict(
-                            size=30,
-                            color="#0f172a"
-                        )
-                    )
-                ]
+    fig_donut.update_layout(
+
+        title=dict(
+            text="Escenario Dominante",
+            font=dict(
+                size=24,
+                color="#0f172a"
             )
+        ),
 
-            st.plotly_chart(
-                fig_donut,
-                use_container_width=True
+        height=500,
+
+        legend=dict(
+            orientation="h",
+            y=-0.05,
+            x=0.15
+        ),
+
+        margin=dict(
+            t=80,
+            b=40,
+            l=20,
+            r=20
+        ),
+
+        paper_bgcolor="white",
+
+        annotations=[
+            dict(
+                text=f"<b>{escenario}</b>",
+                x=0.5,
+                y=0.5,
+                showarrow=False,
+                font=dict(
+                    size=32,
+                    color="#0f172a"
+                )
             )
+        ]
+    )
 
-        # =====================================================
-        # IAAM EJECUTIVO
-        # =====================================================
+    st.plotly_chart(
+        fig_donut,
+        use_container_width=True
+    )
 
-        with graf2:
+# =====================================================
+# IAAM CORPORATIVO PREMIUM
+# =====================================================
 
-            if iaam < 40:
+with graf2:
 
-                color_iaam = "#16a34a"
-                nivel_texto = "Baja probabilidad"
-                intencion_texto = "Prevenir y anticipar"
+    fig_iaam = go.Figure(
+        go.Indicator(
+            mode="gauge+number",
 
-            elif iaam < 70:
+            value=iaam,
 
-                color_iaam = "#d97706"
-                nivel_texto = "Probabilidad moderada"
-                intencion_texto = "Preparación operativa"
+            number={
+                "suffix": "%",
+                "font": {
+                    "size": 54,
+                    "color": "#0f172a"
+                }
+            },
 
-            else:
+            title={
+                "text": "Índice de Activación de Asistencia Militar",
+                "font": {
+                    "size": 22,
+                    "color": "#0f172a"
+                }
+            },
 
-                color_iaam = "#dc2626"
-                nivel_texto = "Alta probabilidad"
-                intencion_texto = "Despliegue inmediato"
+            gauge={
+                "axis": {
+                    "range": [0, 100],
+                    "tickwidth": 1,
+                    "tickcolor": "#94a3b8"
+                },
 
-            st.markdown(
-                f"""
-                <div style="
-                    background:white;
-                    border:1px solid #e5e7eb;
-                    border-radius:18px;
-                    padding:25px;
-                    box-shadow:0 4px 12px rgba(0,0,0,0.05);
-                    min-height:450px;
-                ">
+                "bar": {
+                    "color": "#2563eb",
+                    "thickness": 0.35
+                },
 
-                    <div style="
-                        color:#0f172a;
-                        font-size:22px;
-                        font-weight:800;
-                        text-align:center;
-                    ">
-                        Índice de Activación de Asistencia Militar
-                    </div>
+                "bgcolor": "white",
 
-                    <div style="
-                        text-align:center;
-                        font-size:72px;
-                        font-weight:900;
-                        color:{color_iaam};
-                        margin-top:20px;
-                        line-height:1;
-                    ">
-                        {iaam:.0f}%
-                    </div>
+                "borderwidth": 0,
 
-                    <div style="
-                        height:16px;
-                        background:#e2e8f0;
-                        border-radius:50px;
-                        overflow:hidden;
-                        margin-top:20px;
-                    ">
-                        <div style="
-                            width:{iaam:.0f}%;
-                            height:100%;
-                            background:{color_iaam};
-                        "></div>
-                    </div>
+                "steps": [
+                    {
+                        "range": [0, 30],
+                        "color": "#dcfce7"
+                    },
+                    {
+                        "range": [30, 60],
+                        "color": "#fef3c7"
+                    },
+                    {
+                        "range": [60, 100],
+                        "color": "#fee2e2"
+                    }
+                ],
 
-                    <div style="
-                        background:#f8fafc;
-                        border-radius:12px;
-                        padding:20px;
-                        margin-top:30px;
-                    ">
-
-                        <div style="
-                            color:#64748b;
-                            font-size:12px;
-                            font-weight:700;
-                            text-transform:uppercase;
-                        ">
-                            Nivel de activación
-                        </div>
-
-                        <div style="
-                            color:#0f172a;
-                            font-size:24px;
-                            font-weight:800;
-                            margin-top:6px;
-                        ">
-                            {nivel_texto}
-                        </div>
-
-                        <div style="
-                            color:#64748b;
-                            font-size:12px;
-                            font-weight:700;
-                            text-transform:uppercase;
-                            margin-top:20px;
-                        ">
-                            Intención estratégica
-                        </div>
-
-                        <div style="
-                            color:#334155;
-                            font-size:16px;
-                            margin-top:6px;
-                        ">
-                            {intencion_texto}
-                        </div>
-
-                    </div>
-
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-
-        st.markdown(
-            """
-            <div style="
-                color:#64748b;
-                font-size:12px;
-                margin-top:8px;
-                margin-bottom:15px;
-            ">
-                IRC: Índice de Riesgo de Crisis | IAAM: Índice de Activación de Asistencia Militar
-            </div>
-            """,
-            unsafe_allow_html=True
+                "threshold": {
+                    "line": {
+                        "color": "#0f172a",
+                        "width": 6
+                    },
+                    "thickness": 0.8,
+                    "value": iaam
+                }
+            }
         )
+    )
+
+    fig_iaam.update_layout(
+
+        height=500,
+
+        margin=dict(
+            t=80,
+            b=20,
+            l=20,
+            r=20
+        ),
+
+        paper_bgcolor="white",
+
+        font=dict(
+            color="#0f172a"
+        )
+    )
+
+    st.plotly_chart(
+        fig_iaam,
+        use_container_width=True
+    )
+
+st.markdown("""
+<div style="
+    text-align:center;
+    color:#64748b;
+    font-size:12px;
+    margin-top:10px;
+    margin-bottom:20px;
+">
+IRC: Índice de Riesgo de Crisis &nbsp;&nbsp;|&nbsp;&nbsp;
+IAAM: Índice de Activación de Asistencia Militar
+</div>
+""", unsafe_allow_html=True)
         
         # =====================================================
         # RIESGO POR CATEGORÍA
