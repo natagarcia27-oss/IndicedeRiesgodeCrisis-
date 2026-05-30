@@ -243,8 +243,8 @@ if archivo and procesar:
         escenario_creciente = float(hoja.iloc[fila, 6])
         escenario_critico = float(hoja.iloc[fila, 8])
 
-        irc = float(hoja.iloc[fila, 10])
-        iaam = float(hoja.iloc[fila, 12])
+        irc = float(hoja.iloc[fila, 10]) * 100
+        iaam = float(hoja.iloc[fila, 12]) * 100
 
         criticidad = determinar_criticidad(irc)
 
@@ -323,27 +323,30 @@ if archivo and procesar:
 
         with col1:
 
-            fig = go.Figure(
-                data=[
-                    go.Pie(
-                        labels=[
-                            "Estable",
-                            "Riesgo creciente",
-                            "Crítico"
-                        ],
-                        values=[
-                            escenario_estable,
-                            escenario_creciente,
-                            escenario_critico
-                        ],
-                        hole=0.55
-                    )
-                ]
-            )
+            fig = go.Figure()
 
-            fig.update_layout(
-                title="Distribución de Escenarios"
-            )
+fig.add_trace(
+    go.Bar(
+        x=["Estable","Riesgo creciente","Crítico"],
+        y=[
+            escenario_estable*100,
+            escenario_creciente*100,
+            escenario_critico*100
+        ],
+        text=[
+            f"{escenario_estable*100:.0f}%",
+            f"{escenario_creciente*100:.0f}%",
+            f"{escenario_critico*100:.0f}%"
+        ],
+        textposition="outside"
+    )
+)
+
+fig.update_layout(
+    title="Probabilidad de cada escenario",
+    yaxis_title="Porcentaje",
+    yaxis_range=[0,100]
+)
 
             st.plotly_chart(
                 fig,
@@ -354,16 +357,13 @@ if archivo and procesar:
 
             gauge = go.Figure(
                 go.Indicator(
-                    mode="gauge+number",
-                    value=iaam,
-                    title={"text": "IAAM"},
-                    gauge={
-                        "axis": {
-                            "range": [0, 100]
-                        }
-                    }
-                )
-            )
+    mode="gauge+number",
+    value=iaam,
+    title={"text":"IAAM"},
+    gauge={
+        "axis":{"range":[0,100]}
+    }
+)
 
             st.plotly_chart(
                 gauge,
