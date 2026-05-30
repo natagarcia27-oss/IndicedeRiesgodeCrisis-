@@ -216,81 +216,74 @@ if st.sidebar.button("Nueva evaluación"):
 
 fecha_actual = datetime.now().strftime("%d/%m/%Y %H:%M")
 
-header_html = f"""
+st.markdown("""
 <style>
 
-.header-container {{
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 20px;
-    padding: 35px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}}
+.header-card{
+    background:#ffffff;
+    border:1px solid #e5e7eb;
+    border-radius:20px;
+    padding:30px;
+    margin-bottom:25px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
 
-.header-top {{
-    color: #64748b;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}}
-
-.header-title {{
-    font-size: 36px;
-    font-weight: 800;
-    color: #0f172a;
-    margin-top: 10px;
-    margin-bottom: 12px;
-    line-height: 1.2;
-}}
-
-.header-subtitle {{
-    font-size: 16px;
-    color: #475569;
-    margin-bottom: 20px;
-}}
-
-.header-divider {{
-    height: 1px;
-    background: #e2e8f0;
-    margin: 20px 0;
-}}
-
-.header-footer {{
-    display:flex;
-    justify-content:space-between;
+.header-top{
     color:#64748b;
-    font-size:14px;
-}}
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
+.header-title{
+    font-size:36px;
+    font-weight:800;
+    color:#0f172a;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+.header-subtitle{
+    color:#475569;
+    font-size:16px;
+}
+
+.header-footer{
+    color:#64748b;
+    font-size:13px;
+    margin-top:15px;
+}
 
 </style>
+""", unsafe_allow_html=True)
 
-<div class="header-container">
+st.markdown(
+    f"""
+<div class="header-card">
 
-    <div class="header-top">
-        CENTRO DE MONITOREO ESTRATÉGICO
-    </div>
+<div class="header-top">
+CENTRO DE MONITOREO ESTRATÉGICO
+</div>
 
-    <div class="header-title">
-        Índice de Riesgo de Crisis ante Manifestaciones Sociales Violentas
-    </div>
+<div class="header-title">
+Índice de Riesgo de Crisis ante Manifestaciones Sociales Violentas
+</div>
 
-    <div class="header-subtitle">
-        Sistema Integrado de Evaluación Prospectiva, Alerta Temprana y Apoyo a la Decisión
-    </div>
+<div class="header-subtitle">
+Sistema Integrado de Evaluación Prospectiva, Alerta Temprana y Apoyo a la Decisión
+</div>
 
-    <div class="header-divider"></div>
+<hr>
 
-    <div class="header-footer">
-        <div>Plataforma de monitoreo estratégico</div>
-        <div>{fecha_actual}</div>
-    </div>
+<div class="header-footer">
+Plataforma de monitoreo estratégico | {fecha_actual}
+</div>
 
 </div>
-"""
-
-st.markdown(header_html, unsafe_allow_html=True)
+""",
+unsafe_allow_html=True
+)
 
 # =====================================================
 # PROCESAMIENTO
