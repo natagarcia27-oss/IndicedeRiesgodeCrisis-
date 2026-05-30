@@ -300,38 +300,37 @@ if archivo and procesar:
             
             # FIN DEL FOR DE CATEGORÍAS
             
-                criticidad = determinar_criticidad(irc)
-    
-                escenario = obtener_escenario_dominante(
-                    escenario_estable * 100,
-                    escenario_creciente * 100,
-                    escenario_critico * 100
-                )
-    c1, c2, c3, c4, c5, c6 = st.columns(6)
+        escenario = obtener_escenario_dominante(
+            escenario_estable * 100,
+            escenario_creciente * 100,
+            escenario_critico * 100
+        )
 
-with c1:
-    st.metric("IRC", f"{irc:.0f}%")
+        c1, c2, c3, c4, c5, c6 = st.columns(6)
 
-with c2:
-    st.metric("IAAM", f"{iaam:.0f}%")
+        with c1:
+            st.metric("IRC", f"{irc:.0f}%")
 
-with c3:
-    st.metric("Escenario", escenario)
+        with c2:
+            st.metric("IAAM", f"{iaam:.0f}%")
 
-with c4:
-    st.metric("Criticidad", criticidad)
+        with c3:
+            st.metric("Escenario", escenario)
 
-with c5:
-    st.metric(
-        "Indicadores críticos",
-        indicadores_criticos
-    )
+        with c4:
+            st.metric("Criticidad", criticidad)
 
-with c6:
-    st.metric(
-        "Categorías afectadas",
-        categorias_afectadas
-    )
+        with c5:
+            st.metric(
+                "Indicadores críticos",
+                indicadores_criticos
+            )
+
+        with c6:
+            st.metric(
+                "Categorías afectadas",
+                categorias_afectadas
+            )
                 # RESUMEN
     
                 resumen = generar_resumen(
