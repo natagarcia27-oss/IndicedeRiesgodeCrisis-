@@ -309,37 +309,37 @@ if archivo and procesar:
 
         # ALERTAS
 
-        st.subheader("Alertas Tempranas")
+                st.subheader("Alertas Tempranas")
 
-if irc >= 70:
+        if irc >= 70:
 
-    st.error(
-        "ALERTA CRÍTICA\n\nConvergencia de factores críticos con capacidad de escalamiento."
-    )
+            st.error(
+                "ALERTA CRÍTICA\n\nConvergencia de factores críticos con capacidad de escalamiento."
+            )
 
-    st.warning(
-        "ALERTA PREVENTIVA\n\nIncremento sostenido de indicadores de conflictividad."
-    )
+            st.warning(
+                "ALERTA PREVENTIVA\n\nIncremento sostenido de indicadores de conflictividad."
+            )
 
-    st.info(
-        "ALERTA INFORMATIVA\n\nMonitoreo permanente."
-    )
+            st.info(
+                "ALERTA INFORMATIVA\n\nMonitoreo permanente."
+            )
 
-elif irc >= 40:
+        elif irc >= 40:
 
-    st.warning(
-        "ALERTA PREVENTIVA\n\nIncremento sostenido de indicadores de conflictividad."
-    )
+            st.warning(
+                "ALERTA PREVENTIVA\n\nIncremento sostenido de indicadores de conflictividad."
+            )
 
-    st.info(
-        "ALERTA INFORMATIVA\n\nMonitoreo permanente."
-    )
+            st.info(
+                "ALERTA INFORMATIVA\n\nMonitoreo permanente."
+            )
 
-else:
+        else:
 
-    st.info(
-        "ALERTA INFORMATIVA\n\nCondiciones compatibles con estabilidad funcional."
-    )
+            st.info(
+                "ALERTA INFORMATIVA\n\nCondiciones compatibles con estabilidad funcional."
+            )
 
                 # GRÁFICOS
 
