@@ -684,183 +684,190 @@ if archivo and procesar:
                 use_container_width=True
             )
         
-        # =====================================================
-        # TARJETA 2 - IAAM EJECUTIVO
-        # =====================================================
-        
-        with graf2:
-        
-            if iaam <= 30:
-                color_iaam = "#16a34a"
-                nivel_iaam = "BAJA PROBABILIDAD"
-        
-            elif iaam <= 60:
-                color_iaam = "#d97706"
-                nivel_iaam = "PROBABLE"
-        
-            elif iaam <= 80:
-                color_iaam = "#ea580c"
-                nivel_iaam = "ALTA PROBABILIDAD"
-        
-            else:
-                color_iaam = "#dc2626"
-                nivel_iaam = "INTERVENCIÓN INMINENTE"
-        
-            st.markdown("""
-            <div style="
-                background:white;
-                border:1px solid #e5e7eb;
-                border-radius:20px;
-                padding:20px;
-                box-shadow:0 4px 12px rgba(0,0,0,0.05);
-            ">
-            <h3 style="
-                margin-top:0;
-                color:#0f172a;
-                font-size:24px;
-                font-weight:700;
-            ">
-            Índice de Activación de Asistencia Militar
-            </h3>
-            </div>
-            """, unsafe_allow_html=True)
-        
-            fig_iaam = go.Figure(
-                go.Indicator(
-        
-                    mode="gauge+number",
-        
-                    value=iaam,
-        
-                    number={
-                        "suffix":"%",
-                        "font":{
-                            "size":50,
-                            "color":"#0f172a"
-                        }
-                    },
-        
-                    gauge={
-        
-                        "shape":"angular",
-        
-                        "axis":{
-                            "range":[0,100],
-                            "tickwidth":1,
-                            "tickcolor":"#94a3b8"
-                        },
-        
-                        "bar":{
-                            "color":color_iaam,
-                            "thickness":0.40
-                        },
-        
-                        "bgcolor":"white",
-        
-                        "steps":[
-        
-                            {
-                                "range":[0,30],
-                                "color":"#dcfce7"
-                            },
-        
-                            {
-                                "range":[30,60],
-                                "color":"#fef3c7"
-                            },
-        
-                            {
-                                "range":[60,80],
-                                "color":"#fed7aa"
-                            },
-        
-                            {
-                                "range":[80,100],
-                                "color":"#fee2e2"
-                            }
-        
-                        ],
-        
-                        "threshold":{
-                            "line":{
-                                "color":"#111827",
-                                "width":7
-                            },
-                            "thickness":1,
-                            "value":iaam
-                        }
-                    }
-                )
-            )
-        
-            fig_iaam.update_layout(
-        
-                height=430,
-        
-                margin=dict(
-                    t=30,
-                    b=0,
-                    l=20,
-                    r=20
-                ),
-        
-                paper_bgcolor="white",
-        
-                font=dict(
-                    color="#0f172a"
-                )
-            )
-        
-            st.plotly_chart(
-                fig_iaam,
-                use_container_width=True
-            )
-        
-            st.markdown(f"""
-            <div style="
-                background:#f8fafc;
-                border-radius:14px;
-                padding:18px;
-                margin-top:-20px;
-                border:1px solid #e5e7eb;
-                text-align:center;
-            ">
+            # =====================================================
+            # TARJETA 2 - IAAM PREMIUM EXECUTIVE
+            # =====================================================
+            
+            with graf2:
+            
+                if iaam <= 30:
+                    color_iaam = "#16a34a"
+                    nivel_iaam = "BAJA PROBABILIDAD"
+            
+                elif iaam <= 60:
+                    color_iaam = "#ca8a04"
+                    nivel_iaam = "PROBABLE"
+            
+                elif iaam <= 80:
+                    color_iaam = "#ea580c"
+                    nivel_iaam = "ALTA PROBABILIDAD"
+            
+                else:
+                    color_iaam = "#dc2626"
+                    nivel_iaam = "INTERVENCIÓN INMINENTE"
+            
+                st.markdown("""
                 <div style="
-                    font-size:12px;
-                    font-weight:700;
-                    color:#64748b;
-                    letter-spacing:1px;
+                    background:white;
+                    border-radius:22px;
+                    padding:22px;
+                    border:1px solid #e5e7eb;
+                    box-shadow:0 8px 24px rgba(0,0,0,.08);
                 ">
-                NIVEL DE ACTIVACIÓN
-                </div>
-        
-                <div style="
-                    font-size:22px;
+                <h3 style="
+                    margin:0;
+                    color:#0f172a;
+                    font-size:24px;
                     font-weight:800;
-                    color:{color_iaam};
-                    margin-top:6px;
                 ">
-                {nivel_iaam}
+                    Índice de Activación de Asistencia Militar
+                </h3>
                 </div>
-        
-                <div style="
-                    font-size:14px;
-                    color:#475569;
-                    margin-top:8px;
-                ">
-                {generar_alistamiento(iaam)["intencion"]}
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div style="
-            text-align:center;
-            color:#64748b;
-            font-size:12px;
-            margin-top:10px;
-            margin-bottom:20px;
-        ">
+                """, unsafe_allow_html=True)
+            
+                fig_iaam = go.Figure()
+            
+                fig_iaam.add_trace(
+                    go.Indicator(
+                        mode="gauge+number",
+            
+                        value=iaam,
+            
+                        number={
+                            "suffix":"%",
+                            "font":{
+                                "size":70,
+                                "color":"#0f172a"
+                            }
+                        },
+            
+                        gauge={
+            
+                            "shape":"angular",
+            
+                            "axis":{
+                                "range":[0,100],
+                                "tickwidth":2,
+                                "tickcolor":"#94a3b8"
+                            },
+            
+                            "bar":{
+                                "color":color_iaam,
+                                "thickness":0.55
+                            },
+            
+                            "bgcolor":"white",
+            
+                            "borderwidth":4,
+            
+                            "bordercolor":"#cbd5e1",
+            
+                            "steps":[
+            
+                                {
+                                    "range":[0,30],
+                                    "color":"#dcfce7"
+                                },
+            
+                                {
+                                    "range":[30,60],
+                                    "color":"#fef3c7"
+                                },
+            
+                                {
+                                    "range":[60,80],
+                                    "color":"#fed7aa"
+                                },
+            
+                                {
+                                    "range":[80,100],
+                                    "color":"#fee2e2"
+                                }
+            
+                            ],
+            
+                            "threshold":{
+            
+                                "line":{
+                                    "color":"#111827",
+                                    "width":10
+                                },
+            
+                                "thickness":1,
+            
+                                "value":iaam
+                            }
+                        }
+                    )
+                )
+            
+                fig_iaam.update_layout(
+            
+                    height=500,
+            
+                    margin=dict(
+                        t=20,
+                        b=0,
+                        l=20,
+                        r=20
+                    ),
+            
+                    paper_bgcolor="white",
+            
+                    font=dict(
+                        family="Arial",
+                        color="#0f172a"
+                    )
+                )
+            
+                st.plotly_chart(
+                    fig_iaam,
+                    use_container_width=True
+                )
+            
+                st.markdown(
+                    f"""
+                    <div style="
+                        background:white;
+                        border-radius:18px;
+                        padding:22px;
+                        margin-top:-15px;
+                        border:1px solid #e5e7eb;
+                        box-shadow:0 4px 12px rgba(0,0,0,.05);
+                        text-align:center;
+                    ">
+            
+                        <div style="
+                            font-size:12px;
+                            font-weight:800;
+                            color:#64748b;
+                            letter-spacing:1px;
+                            text-transform:uppercase;
+                        ">
+                            Nivel de Activación
+                        </div>
+            
+                        <div style="
+                            margin-top:10px;
+                            font-size:26px;
+                            font-weight:900;
+                            color:{color_iaam};
+                        ">
+                            {nivel_iaam}
+                        </div>
+            
+                        <div style="
+                            margin-top:10px;
+                            font-size:15px;
+                            color:#475569;
+                        ">
+                            {generar_alistamiento(iaam)["intencion"]}
+                        </div>
+            
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
         IRC · Índice de Riesgo de Crisis &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         IAAM · Índice de Activación de Asistencia Militar
         </div>
