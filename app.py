@@ -565,15 +565,13 @@ IAAM: Índice de Activación de Asistencia Militar
         for orden in alistamiento["ordenes"]:
             st.success(orden)
 
-        # =====================================================
-        # HISTORIAL
-        # =====================================================
+# ==================================================
+# HISTORIAL
+# ==================================================
 
-        st.subheader(
-            "Historial de Evaluaciones"
-        )
+st.subheader("Historial de Evaluaciones")
 
-       st.dataframe(
+st.dataframe(
     pd.DataFrame(
         st.session_state.historial
     ),
