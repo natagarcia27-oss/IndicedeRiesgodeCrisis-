@@ -317,90 +317,83 @@ if archivo and procesar:
             f"{alerta_titulo}: {alerta_texto}"
         )
 
-        # GRÁFICOS
+                # GRÁFICOS
 
         col1, col2 = st.columns(2)
 
-       with col1:
+        with col1:
 
-    fig = go.Figure()
+            fig = go.Figure()
 
-    fig.add_trace(
-        go.Bar(
-            x=["Estable","Riesgo creciente","Crítico"],
-            y=[
-                escenario_estable*100,
-                escenario_creciente*100,
-                escenario_critico*100
-            ],
-            text=[
-                f"{escenario_estable*100:.0f}%",
-                f"{escenario_creciente*100:.0f}%",
-                f"{escenario_critico*100:.0f}%"
-            ],
-            textposition="outside"
-        )
-    )
+            fig.add_trace(
+                go.Bar(
+                    x=[
+                        "Estable",
+                        "Riesgo creciente",
+                        "Crítico"
+                    ],
+                    y=[
+                        escenario_estable * 100,
+                        escenario_creciente * 100,
+                        escenario_critico * 100
+                    ],
+                    text=[
+                        f"{escenario_estable*100:.0f}%",
+                        f"{escenario_creciente*100:.0f}%",
+                        f"{escenario_critico*100:.0f}%"
+                    ],
+                    textposition="outside"
+                )
+            )
 
-    fig.update_layout(
-        title="Probabilidad de cada escenario",
-        yaxis_title="Porcentaje",
-        yaxis_range=[0,100]
-    )
-
-    st.plotly_chart(
-        fig,
-        use_container_width=True
-    )
-
-fig.update_layout(
-    title="Probabilidad de cada escenario",
-    yaxis_title="Porcentaje",
-    yaxis_range=[0,100]
-)
+            fig.update_layout(
+                title="Probabilidad de cada escenario",
+                yaxis_title="Porcentaje",
+                yaxis_range=[0, 100]
+            )
 
             st.plotly_chart(
                 fig,
                 use_container_width=True
             )
 
-       with col2:
+        with col2:
 
-    gauge = go.Figure(
-        go.Indicator(
-            mode="gauge+number",
-            value=iaam * 100,
-            title={
-                "text": "IAAM (%)"
-            },
-            number={
-                "suffix": "%"
-            },
-            gauge={
-                "axis": {
-                    "range": [0, 100]
-                },
-                "bar": {
-                    "thickness": 0.3
-                },
-                "steps": [
-                    {"range": [0, 30], "color": "#d9ead3"},
-                    {"range": [30, 60], "color": "#fff2cc"},
-                    {"range": [60, 80], "color": "#f4cccc"},
-                    {"range": [80, 100], "color": "#ea9999"}
-                ]
-            }
-        )
-    )
+            gauge = go.Figure(
+                go.Indicator(
+                    mode="gauge+number",
+                    value=iaam,
+                    title={
+                        "text": "IAAM (%)"
+                    },
+                    number={
+                        "suffix": "%"
+                    },
+                    gauge={
+                        "axis": {
+                            "range": [0, 100]
+                        },
+                        "bar": {
+                            "thickness": 0.3
+                        },
+                        "steps": [
+                            {"range": [0, 30], "color": "#d9ead3"},
+                            {"range": [30, 60], "color": "#fff2cc"},
+                            {"range": [60, 80], "color": "#f4cccc"},
+                            {"range": [80, 100], "color": "#ea9999"}
+                        ]
+                    }
+                )
+            )
 
-    gauge.update_layout(
-        height=450
-    )
+            gauge.update_layout(
+                height=450
+            )
 
-    st.plotly_chart(
-        gauge,
-        use_container_width=True
-    )
+            st.plotly_chart(
+                gauge,
+                use_container_width=True
+            )
 
         st.caption("""
 IRC: Índice de Riesgo de Crisis
