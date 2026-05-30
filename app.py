@@ -298,28 +298,31 @@ if archivo and procesar:
             if tiene_critico:
                 categorias_afectadas += 1
 
-        criticidad = determinar_criticidad(irc)
+                   criticidad = determinar_criticidad(irc)
 
-        escenario = obtener_escenario_dominante(
-            escenario_estable * 100,
-            escenario_creciente * 100,
-            escenario_critico * 100
-        )
-        # RESUMEN
-resumen = generar_resumen(
-    irc,
-    iaam,
-    escenario
-)
-        st.subheader(
-            "Resumen Ejecutivo Automatizado"
-        )
+            escenario = obtener_escenario_dominante(
+                escenario_estable * 100,
+                escenario_creciente * 100,
+                escenario_critico * 100
+            )
 
-        st.info(resumen)
+            # RESUMEN
 
-        # ALERTAS
+            resumen = generar_resumen(
+                irc,
+                iaam,
+                escenario
+            )
 
-        st.subheader("Alertas Tempranas")
+            st.subheader(
+                "Resumen Ejecutivo Automatizado"
+            )
+
+            st.info(resumen)
+
+            # ALERTAS
+
+            st.subheader("Alertas Tempranas")
 
         if irc >= 70:
 
