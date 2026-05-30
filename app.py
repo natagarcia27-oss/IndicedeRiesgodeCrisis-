@@ -341,7 +341,7 @@ if archivo and procesar:
                 "ALERTA INFORMATIVA\n\nCondiciones compatibles con estabilidad funcional."
             )
 
-                # GRÁFICOS
+        # GRÁFICOS
 
         col1, col2 = st.columns(2)
 
@@ -385,7 +385,7 @@ if archivo and procesar:
                 fig,
                 use_container_width=True
             )
-                        st.subheader("Riesgo por Categoría")
+            st.subheader("Riesgo por Categoría")
 
             radar = go.Figure()
 
