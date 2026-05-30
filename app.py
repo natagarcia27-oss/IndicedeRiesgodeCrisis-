@@ -515,119 +515,43 @@ if archivo and procesar:
         </div>
         """, unsafe_allow_html=True)
 
-        # =====================================================
+                # =====================================================
         # ALERTAS
         # =====================================================
 
-        # =====================================
-        # ALERTAS TEMPRANAS
-        # =====================================
-        
-        st.markdown("""
-        <div style="
-            margin-top:10px;
-            margin-bottom:15px;
-        ">
+        st.markdown(
+            """
             <h3 style="
                 color:#0f172a;
                 font-size:22px;
                 font-weight:700;
-                margin-bottom:10px;
+                margin-top:10px;
+                margin-bottom:15px;
             ">
                 Alertas Tempranas
             </h3>
-        </div>
-        """, unsafe_allow_html=True)
-        
+            """,
+            unsafe_allow_html=True
+        )
+
         if irc >= 70:
-        
-            st.markdown("""
-            <div style="
-                background:#fef2f2;
-                border-left:6px solid #dc2626;
-                padding:20px;
-                border-radius:12px;
-                margin-bottom:20px;
-            ">
-                <div style="
-                    font-size:18px;
-                    font-weight:700;
-                    color:#991b1b;
-                    margin-bottom:8px;
-                ">
-                    🔴 ALERTA CRÍTICA
-                </div>
-        
-                <p style="
-                    color:#7f1d1d;
-                    line-height:1.6;
-                    margin:0;
-                ">
-                    Convergencia de factores críticos con capacidad de escalamiento.
-                </p>
-        
-            </div>
-            """, unsafe_allow_html=True)
-        
+
+            st.error(
+                "🔴 ALERTA CRÍTICA\n\nConvergencia de factores críticos con capacidad de escalamiento."
+            )
+
         elif irc >= 40:
-        
-            st.markdown("""
-            <div style="
-                background:#fffbeb;
-                border-left:6px solid #d97706;
-                padding:20px;
-                border-radius:12px;
-                margin-bottom:20px;
-            ">
-                <div style="
-                    font-size:18px;
-                    font-weight:700;
-                    color:#92400e;
-                    margin-bottom:8px;
-                ">
-                    🟡 ALERTA PREVENTIVA
-                </div>
-        
-                <p style="
-                    color:#78350f;
-                    line-height:1.6;
-                    margin:0;
-                ">
-                    Incremento sostenido de indicadores de riesgo.
-                </p>
-        
-            </div>
-            """, unsafe_allow_html=True)
-        
+
+            st.warning(
+                "🟡 ALERTA PREVENTIVA\n\nIncremento sostenido de indicadores de riesgo."
+            )
+
         else:
-        
-            st.markdown("""
-            <div style="
-                background:#f0fdf4;
-                border-left:6px solid #16a34a;
-                padding:20px;
-                border-radius:12px;
-                margin-bottom:20px;
-            ">
-                <div style="
-                    font-size:18px;
-                    font-weight:700;
-                    color:#166534;
-                    margin-bottom:8px;
-                ">
-                    🟢 ALERTA INFORMATIVA
-                </div>
-        
-                <p style="
-                    color:#14532d;
-                    line-height:1.6;
-                    margin:0;
-                ">
-                    Condiciones compatibles con estabilidad funcional.
-                </p>
-        
-            </div>
-            """, unsafe_allow_html=True)
+
+            st.success(
+                "🟢 ALERTA INFORMATIVA\n\nCondiciones compatibles con estabilidad funcional."
+            )
+
         # =====================================================
         # GRÁFICOS PRINCIPALES
         # =====================================================
