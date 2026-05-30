@@ -573,16 +573,18 @@ IAAM: Índice de Activación de Asistencia Militar
             "Historial de Evaluaciones"
         )
 
-        st.dataframe(
-            pd.DataFrame(
-                st.session_state.historial
-            ),
-            use_container_width=True
-        )
+       st.dataframe(
+    pd.DataFrame(
+        st.session_state.historial
+    ),
+    use_container_width=True
+)
 
-        st.error(
-            f"Error procesando matriz: {e}"
-        )
+except Exception as e:
+
+    st.error(
+        f"Error procesando matriz: {e}"
+    )
 
 else:
 
