@@ -398,7 +398,7 @@ if archivo and procesar:
                 fig,
                 use_container_width=True
             )
-                        st.subheader("Riesgo por Categoría")
+            st.subheader("Riesgo por Categoría")
 
             radar = go.Figure()
 
