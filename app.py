@@ -306,7 +306,7 @@ if archivo and procesar:
             escenario_critico * 100
         )
 
-               criticidad = determinar_criticidad(irc)
+        criticidad = determinar_criticidad(irc)
 
         # =====================================================
         # MÉTRICAS PRINCIPALES
