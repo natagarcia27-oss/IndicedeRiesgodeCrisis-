@@ -35,18 +35,6 @@ st.markdown("""
 # FUNCIONES
 # =====================================================
 
-def determinar_criticidad(irc):
-
-    if irc < 40:
-        return "ESTABLE"
-
-    elif irc < 70:
-        return "RIESGO CRECIENTE"
-
-    else:
-        return "CRÍTICO"
-
-
 def obtener_escenario_dominante(
         estable,
         creciente,
@@ -96,7 +84,7 @@ La convergencia de factores asociados a movilización social y amplificación na
         return f"""
 El sistema evidencia convergencia de factores críticos.
 
-El IRC alcanza {irc*100:.0f}% y el IAAM {iaam*100:.0f}%
+El IRC alcanza {irc:.0f}% y el IAAM {iaam:.0f}%
 
 La simultaneidad de múltiples factores de riesgo incrementa significativamente la probabilidad de evolución hacia escenarios de crisis y exige fortalecimiento de capacidades institucionales y mecanismos de coordinación.
 """
@@ -357,18 +345,58 @@ if archivo and procesar:
         indicadores_criticos = 0
 
         for i in range(2, 66):
+        
+            valor = hoja.iloc[i, 8]
+        
+            if pd.notna(valor):
+        
+                valor = str(valor).strip()
+        
+                if valor != "":
+                    indicadores_criticos += 1
 
-            valor = str(
+        # ==========================================
+        # CATEGORÍAS AFECTADAS
+        # ==========================================
+        
+        categorias_afectadas_set = set()
+        
+        categoria_actual = None
+        
+        for i in range(2, 66):
+        
+            categoria = hoja.iloc[i, 0]
+        
+            if pd.notna(categoria):
+                categoria_actual = str(categoria).strip()
+        
+            valor_estable = str(
+                hoja.iloc[i, 4]
+            ).strip().upper()
+        
+            valor_creciente = str(
+                hoja.iloc[i, 6]
+            ).strip().upper()
+        
+            valor_critico = str(
                 hoja.iloc[i, 8]
             ).strip().upper()
-
-            if valor in ["X", "1", "CRITICO", "CRÍTICO"]:
-                indicadores_criticos += 1
+        
+            indicador_marcado = (
+                valor_estable in ["SI", "SÍ", "X", "1", "✓"]
+                or valor_creciente in ["SI", "SÍ", "X", "1", "✓"]
+                or valor_critico in ["SI", "SÍ", "X", "1", "✓"]
+            )
+        
+            if indicador_marcado and categoria_actual:
+                categorias_afectadas_set.add(categoria_actual)
+        
+        categorias_afectadas = len(categorias_afectadas_set)
 
         # ==========================================
-        # CATEGORÍAS
+        # CATEGORÍAS PARA RADAR
         # ==========================================
-
+        
         categorias = {
             "Legitimidad electoral": range(0, 8),
             "Movilización social": range(8, 16),
@@ -381,47 +409,27 @@ if archivo and procesar:
             "Estabilidad institucional": range(50, 56),
             "Variables económicas": range(56, 64)
         }
-
-        categorias_afectadas = 0
-
-        for categoria, filas in categorias.items():
-
-            tiene_critico = False
-
-            for fila_cat in filas:
-
-                fila_excel = fila_cat + 1
-
-                valor = str(
-                    hoja.iloc[fila_excel, 8]
-                ).strip().upper()
-
-                if valor in ["SI", "SÍ", "X", "1"]:
-                    tiene_critico = True
-
-            if tiene_critico:
-                categorias_afectadas += 1
-            
-            # FIN DEL FOR DE CATEGORÍAS
-            
+        
+        # =====================================
+        # VARIABLES ESTRATÉGICAS
+        # =====================================
+        
         escenario = obtener_escenario_dominante(
             escenario_estable * 100,
             escenario_creciente * 100,
             escenario_critico * 100
         )
-
-        criticidad = determinar_criticidad(irc)
-
+               
         # =====================================
         # MÉTRICAS PRINCIPALES
         # =====================================
 
-        c1, c2, c3, c4, c5, c6 = st.columns(6)
+        c1, c2, c3, c4, c5 = st.columns(5)
 
         with c1:
             st.markdown(f"""
             <div class="metric-card">
-                <div class="metric-title">IRC</div>
+                <div class="metric-title">ÍNDICE DE RIESGO DE CRISIS</div>
                 <div class="metric-value">{irc:.0f}%</div>
             </div>
             """, unsafe_allow_html=True)
@@ -429,7 +437,7 @@ if archivo and procesar:
         with c2:
             st.markdown(f"""
             <div class="metric-card">
-                <div class="metric-title">IAAM</div>
+                <div class="metric-title">ÍNDICE DE ACTIVACIÓN DE ASISTENCIA MILITAR</div>
                 <div class="metric-value">{iaam:.0f}%</div>
             </div>
             """, unsafe_allow_html=True)
@@ -445,20 +453,12 @@ if archivo and procesar:
         with c4:
             st.markdown(f"""
             <div class="metric-card">
-                <div class="metric-title">Criticidad</div>
-                <div class="metric-value">{criticidad}</div>
-            </div>
-            """, unsafe_allow_html=True)
-
-        with c5:
-            st.markdown(f"""
-            <div class="metric-card">
                 <div class="metric-title">Indicadores críticos</div>
                 <div class="metric-value">{indicadores_criticos}</div>
             </div>
             """, unsafe_allow_html=True)
 
-        with c6:
+        with c5:
             st.markdown(f"""
             <div class="metric-card">
                 <div class="metric-title">Categorías afectadas</div>
@@ -643,27 +643,17 @@ if archivo and procesar:
         
                 annotations=[
                     dict(
-                        text=f"<b>{dominante_valor:.1f}%</b>",
-                        x=0.5,
-                        y=0.55,
-                        showarrow=False,
-                        font=dict(
-                            size=40,
-                            color="#0f172a"
-                        )
-                    ),
-                    dict(
                         text=escenario,
                         x=0.5,
-                        y=0.42,
+                        y=0.50,
                         showarrow=False,
                         font=dict(
-                            size=20,
-                            color="#64748b"
+                            size=34,
+                            color="#0f172a"
                         )
                     )
                 ],
-        
+       
                 legend=dict(
                     orientation="h",
                     y=-0.05,
@@ -796,90 +786,234 @@ if archivo and procesar:
                 unsafe_allow_html=True
             )        
         # =====================================================
-        # RIESGO POR CATEGORÍA
+        # RIESGO POR CATEGORÍA - VERSIÓN EJECUTIVA
         # =====================================================
-
-        st.subheader("Riesgo por Categoría")
-
-        radar = go.Figure()
-
+        
+        st.markdown("""
+        <div style="
+        background:white;
+        border:1px solid #e5e7eb;
+        border-radius:20px;
+        padding:20px;
+        box-shadow:0 6px 18px rgba(0,0,0,0.08);
+        margin-top:20px;
+        ">
+        <h3 style="
+        margin:0;
+        color:#0f172a;
+        font-size:24px;
+        font-weight:800;
+        ">
+        Riesgo por Categoría
+        </h3>
+        
+        <p style="
+        margin-top:5px;
+        color:#64748b;
+        font-size:14px;
+        ">
+        Vista polar de la intensidad por categoría de amenaza
+        </p>
+        
+        </div>
+        """, unsafe_allow_html=True)
+        
         riesgo_categorias = []
-
+        
+        colores_riesgo = []
+        
         for categoria, filas in categorias.items():
-
+        
             estable = 0
             creciente = 0
             critico = 0
-
+        
             for fila_cat in filas:
-
+        
                 fila_excel = fila_cat + 1
-
+        
                 valor_estable = str(
                     hoja.iloc[fila_excel, 4]
                 ).strip().upper()
-
+        
                 valor_creciente = str(
                     hoja.iloc[fila_excel, 6]
                 ).strip().upper()
-
+        
                 valor_critico = str(
                     hoja.iloc[fila_excel, 8]
                 ).strip().upper()
-
-                if "✓" in valor_estable or valor_estable in ["SI", "SÍ", "X", "1"]:
+        
+                if valor_estable in ["SI","SÍ","X","1","✓"]:
                     estable += 1
-
-                if "✓" in valor_creciente or valor_creciente in ["SI", "SÍ", "X", "1"]:
+        
+                if valor_creciente in ["SI","SÍ","X","1","✓"]:
                     creciente += 1
-
-                if "✓" in valor_critico or valor_critico in ["SI", "SÍ", "X", "1"]:
+        
+                if valor_critico in ["SI","SÍ","X","1","✓"]:
                     critico += 1
-
-            total = estable + creciente + critico
-
-            if total == 0:
-
-                riesgo = 0
-
-            else:
-
-                puntaje = (
+        
+            riesgo = (
+                (
+                    critico * 3 +
+                    creciente * 2 +
                     estable * 1
-                    + creciente * 2
-                    + critico * 3
                 )
-
-                promedio = puntaje / total
-
-                riesgo = (promedio / 3) * 100
-
-            riesgo_categorias.append(riesgo)
-
+                /
+                (len(filas) * 3)
+            ) * 100
+        
+            riesgo_categorias.append(round(riesgo,1))
+                
+            if riesgo <= 30:
+                    colores_riesgo.append("#22c55e")
+                
+            elif riesgo <= 60:
+                    colores_riesgo.append("#eab308")
+                
+            elif riesgo <= 80:
+                    colores_riesgo.append("#f97316")
+                
+            else:
+                    colores_riesgo.append("#dc2626")     
+                
+            etiquetas_radar = []
+    
+            for nombre, valor in zip(
+                categorias.keys(),
+                riesgo_categorias
+            ):
+            
+                etiquetas_radar.append(
+            f"{nombre}<br><b>{valor:.0f}%</b>"
+        )
+                
+        radar = go.Figure()
+        
         radar.add_trace(
             go.Scatterpolar(
+        
                 r=riesgo_categorias,
-                theta=list(categorias.keys()),
+        
+                theta=etiquetas_radar,
+        
                 fill="toself",
-                name="Nivel de riesgo"
+        
+                fillcolor="rgba(37,99,235,0.25)",
+        
+                line=dict(
+                    color="#2563eb",
+                    width=4
+                ),
+        
+                marker=dict(
+                    size=12,
+                    color="#2563eb",
+                    line=dict(
+                        color="white",
+                        width=2
+                    )
+                ),
+        
+                mode="lines+markers",
+                
+                name="Riesgo"
             )
         )
-
+        
         radar.update_layout(
+        
+            paper_bgcolor="white",
+        
             polar=dict(
+        
+                bgcolor="white",
+        
                 radialaxis=dict(
                     visible=True,
-                    range=[0, 100]
+                
+                    range=[0,100],
+                
+                    tickvals=[
+                        0,20,40,60,80,100
+                    ],
+                
+                    tickfont=dict(
+                        size=14
+                    ),
+                
+                    gridcolor="#cbd5e1",
+                
+                    gridwidth=1,
+                
+                    linecolor="#94a3b8"
+                ),
+        
+                angularaxis=dict(
+                    gridcolor="#e2e8f0",
+                    linecolor="#cbd5e1",
+                    tickfont=dict(
+                        size=15,
+                        color="#0f172a"
+                    )
                 )
             ),
-            height=650
+        
+            showlegend=False,
+        
+            margin=dict(
+                t=40,
+                b=40,
+                l=40,
+                r=40
+            ),
+        
+            height=850
         )
-
+        
         st.plotly_chart(
             radar,
             use_container_width=True
         )
-
+            
+        st.info(
+            "ℹ️ El área azul representa el nivel de riesgo agregado por categoría."
+        )
+            
+        st.markdown("""
+        <div style="
+        display:flex;
+        justify-content:center;
+        gap:60px;
+        margin-top:15px;
+        margin-bottom:25px;
+        font-size:16px;
+        font-weight:600;
+        ">
+        
+        <div style="color:#22c55e;">
+        🟢 0% - 30%<br>
+        Bajo
+        </div>
+        
+        <div style="color:#eab308;">
+        🟡 31% - 60%<br>
+        Moderado
+        </div>
+        
+        <div style="color:#f97316;">
+        🟠 61% - 80%<br>
+        Alto
+        </div>
+        
+        <div style="color:#dc2626;">
+        🔴 81% - 100%<br>
+        Crítico
+        </div>
+        
+        </div>
+        """, unsafe_allow_html=True)
+            
         # =====================================================
         # ALISTAMIENTO ESTRATÉGICO
         # =====================================================
